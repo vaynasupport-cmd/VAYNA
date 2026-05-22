@@ -237,7 +237,7 @@ function BentoCard({
   return (
     <motion.div
       variants={fadeUp}
-      className={`feature-card flex flex-col lg:flex-${reversed ? 'row-reverse' : 'row'} relative overflow-hidden`}
+      className={`feature-card flex flex-col ${reversed ? 'lg:flex-row-reverse' : 'lg:flex-row'} relative overflow-hidden`}
       style={{
         borderRadius: '24px',
         border: '1px solid rgba(255,255,255,0.08)',
