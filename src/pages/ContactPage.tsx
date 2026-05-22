@@ -124,7 +124,7 @@ export function ContactPage() {
                   <Mail style={{ color: '#00f5ff' }} /> Email Direct
                 </h3>
                 <p className="mb-4" style={{ color: 'rgba(240,244,255,0.5)' }}>Vous préférez utiliser votre propre boîte mail ou envoyer des pièces jointes ?</p>
-                <a href="mailto:support@vayna.io" className="text-lg font-medium hover:underline transition-all" style={{ color: '#00f5ff' }}>support@vayna.io</a>
+                <a href="mailto:vayna.support@gmail.com" className="text-lg font-medium hover:underline transition-all" style={{ color: '#00f5ff' }}>vayna.support@gmail.com</a>
               </div>
               <div className="p-8 rounded-2xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
                 <h3 className="text-xl font-semibold mb-6 flex items-center gap-3">
