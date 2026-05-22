@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
-import { cn } from '@/lib/utils'
 import { VaynaLogo } from '@/components/VaynaLogo'
 
 type Category = 'auth' | 'mt5_sync' | 'accounts' | 'trades' | 'journal' | 'stats' | 'settings' | 'issues' | 'tips'
