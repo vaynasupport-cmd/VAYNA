@@ -237,17 +237,13 @@ function BentoCard({
   return (
     <motion.div
       variants={fadeUp}
-      className="feature-card"
+      className={`feature-card flex flex-col lg:flex-${reversed ? 'row-reverse' : 'row'} relative overflow-hidden`}
       style={{
         borderRadius: '24px',
         border: '1px solid rgba(255,255,255,0.08)',
         background: 'rgba(255,255,255,0.02)',
         backdropFilter: 'blur(16px)',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: reversed ? 'row-reverse' : 'row',
         boxShadow: `0 20px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08)`,
-        position: 'relative',
         minHeight: '400px',
       }}
     >
@@ -259,7 +255,7 @@ function BentoCard({
       }} />
 
       {/* TEXT SECTION */}
-      <div className="feature-card-text" style={{ flex: 1, padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', zIndex: 1 }}>
+      <div className="feature-card-text p-8 lg:p-12 flex-1 flex flex-col justify-center relative z-10">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
           <Icon size={18} style={{ color }} />
           <span style={{ fontSize: '12px', fontWeight: '700', color, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
@@ -286,7 +282,7 @@ function BentoCard({
       </div>
 
       {/* VISUAL SECTION */}
-      <div style={{ flex: 1.2, padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', zIndex: 1, background: 'rgba(10,10,15,0.4)', borderLeft: reversed ? 'none' : '1px solid rgba(255,255,255,0.04)', borderRight: reversed ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
+      <div className={`flex-[1.2] p-6 flex items-center justify-center relative z-10 bg-[#0a0a0f]/40 border-t border-white/5 lg:border-t-0 ${reversed ? 'lg:border-r lg:border-white/5' : 'lg:border-l lg:border-white/5'}`}>
         {visual}
       </div>
     </motion.div>
@@ -706,27 +702,9 @@ export function FeaturesStack() {
           from { transform: rotateY(0deg); }
           to { transform: rotateY(360deg); }
         }
-
-        .feature-stack {
-          display: flex;
-          flex-direction: column;
-          gap: 60px;
-          max-width: 1240px;
-          margin: 0 auto;
-          padding: 0 32px;
-        }
-
-        @media (max-width: 900px) {
-          .feature-card {
-            flex-direction: column !important;
-          }
-          .feature-card-text {
-            padding: 32px !important;
-          }
-        }
       `}</style>
 
-      <div className="feature-stack">
+      <div className="flex flex-col gap-10 sm:gap-[60px] max-w-7xl mx-auto px-4 sm:px-8">
         {/* FEATURE 1 — Synchronisation */}
         <BentoCard
           icon={Zap}

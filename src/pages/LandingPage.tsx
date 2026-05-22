@@ -142,21 +142,21 @@ export function LandingPage() {
       <ParticleCanvas />
 
       {/* ── NAV ── */}
-      <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, background: 'rgba(10,10,15,0.85)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(0,245,255,0.08)' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 32px', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <VaynaLogo size={32} showText />
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <nav className="fixed top-0 left-0 right-0 z-[100] bg-[#0a0a0f]/85 backdrop-blur-xl border-b border-cyan-500/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-4 flex flex-wrap items-center justify-between gap-4">
+          <VaynaLogo size={28} showText />
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
 
-            <Link to="/contact" style={{ padding: '8px 16px', background: 'transparent', border: '1px solid rgba(0,245,255,0.2)', borderRadius: '8px', color: 'rgba(240,244,255,0.7)', textDecoration: 'none', fontSize: '14px', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '6px', transition: 'all 0.2s' }}>
+            <Link to="/contact" className="hidden sm:flex px-3 py-2 bg-transparent border border-cyan-500/20 rounded-lg text-white/70 no-underline text-xs sm:text-sm font-medium items-center gap-2 transition-all hover:bg-cyan-500/10">
               <MessageSquare size={16} /><span>Support</span>
             </Link>
-            <Link to="/faq" style={{ padding: '8px 16px', background: 'transparent', border: '1px solid rgba(0,245,255,0.2)', borderRadius: '8px', color: 'rgba(240,244,255,0.7)', textDecoration: 'none', fontSize: '14px', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '6px', transition: 'all 0.2s' }}>
+            <Link to="/faq" className="hidden sm:flex px-3 py-2 bg-transparent border border-cyan-500/20 rounded-lg text-white/70 no-underline text-xs sm:text-sm font-medium items-center gap-2 transition-all hover:bg-cyan-500/10">
               <HelpCircle size={16} /><span>FAQ</span>
             </Link>
-            <Link to="/login" style={{ padding: '8px 16px', background: 'transparent', border: '1px solid rgba(0,245,255,0.2)', borderRadius: '8px', color: 'rgba(240,244,255,0.7)', textDecoration: 'none', fontSize: '14px', fontWeight: '500', transition: 'all 0.2s' }}>Se connecter</Link>
+            <Link to="/login" className="px-3 py-2 bg-transparent border border-cyan-500/20 rounded-lg text-white/70 no-underline text-xs sm:text-sm font-medium transition-all hover:bg-cyan-500/10">Se connecter</Link>
             <MagneticButton to="/register">
-              <div style={{ padding: '9px 18px', background: 'linear-gradient(135deg, #00f5ff, #007bff)', borderRadius: '8px', color: '#0a0a0f', fontSize: '13px', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 16px rgba(0,245,255,0.3)' }}>
-                Commencer gratuitement <ArrowRight size={14} />
+              <div className="px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg text-[#0a0a0f] text-xs sm:text-sm font-bold flex items-center gap-2 shadow-[0_4px_16px_rgba(0,245,255,0.3)]" style={{ background: 'linear-gradient(135deg, #00f5ff, #007bff)' }}>
+                Commencer <span className="hidden sm:inline">gratuitement</span> <ArrowRight size={14} />
               </div>
             </MagneticButton>
           </div>
@@ -164,40 +164,38 @@ export function LandingPage() {
       </nav>
 
       {/* ── HERO ── */}
-      <section style={{ minHeight: '100vh', padding: '120px 32px 80px', display: 'flex', alignItems: 'center', maxWidth: '1200px', margin: '0 auto', gap: '60px' }}>
+      <section className="min-h-screen px-4 sm:px-8 pt-32 pb-16 lg:py-20 flex flex-col lg:flex-row items-center max-w-7xl mx-auto gap-12 lg:gap-16">
         {/* LEFT — Text */}
-        <motion.div initial="hidden" animate="visible" variants={stagger} style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '28px' }}>
-          <motion.div variants={fadeUp} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', background: 'rgba(0,245,255,0.08)', border: '1px solid rgba(0,245,255,0.2)', borderRadius: '100px', color: '#00f5ff', fontSize: '12px', fontWeight: '600', letterSpacing: '0.05em', width: 'fit-content' }}>
+        <motion.div initial="hidden" animate="visible" variants={stagger} className="flex-1 flex flex-col gap-6 lg:gap-8 w-full text-center lg:text-left items-center lg:items-start">
+          <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-cyan-500/10 border border-cyan-500/20 rounded-full text-cyan-400 text-xs sm:text-sm font-semibold tracking-wide">
             <Activity size={12} /><span>Journal de Trading Professionnel</span>
           </motion.div>
 
-          <motion.h1 variants={fadeUp} style={{ fontSize: 'clamp(36px, 5vw, 58px)', fontWeight: '900', lineHeight: 1.1, letterSpacing: '-0.03em', margin: 0, color: '#f0f4ff' }}>
+          <motion.h1 variants={fadeUp} className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight tracking-tight text-white m-0">
             Dominez vos trades.<br />
             <span style={{ background: 'linear-gradient(135deg, #00f5ff, #7B2FBE)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               Automatisez votre tracking.
             </span>
           </motion.h1>
 
-          <motion.p variants={fadeUp} style={{ fontSize: '17px', lineHeight: 1.7, color: 'rgba(240,244,255,0.55)', maxWidth: '520px', margin: 0 }}>
+          <motion.p variants={fadeUp} className="text-base sm:text-lg leading-relaxed text-white/55 max-w-xl mx-auto lg:mx-0 m-0">
             Import automatique depuis MT4/MT5. Tracking avancé, analytics, et journal psychologique — prenez le contrôle avec des données ultra-précises.
           </motion.p>
 
-          <motion.div variants={fadeUp} style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
+          <motion.div variants={fadeUp} className="flex items-center justify-center lg:justify-start gap-4 flex-wrap w-full">
             <MagneticButton to="/register">
-              <div style={{ padding: '15px 28px', background: 'linear-gradient(135deg, #00f5ff, #007bff)', borderRadius: '12px', color: '#0a0a0f', fontSize: '15px', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '10px', boxShadow: '0 6px 24px rgba(0,245,255,0.35)', cursor: 'pointer' }}>
+              <div className="px-5 py-3 sm:px-7 sm:py-4 rounded-xl text-[#0a0a0f] text-sm sm:text-base font-bold inline-flex items-center gap-2 sm:gap-3 cursor-pointer" style={{ background: 'linear-gradient(135deg, #00f5ff, #007bff)', boxShadow: '0 6px 24px rgba(0,245,255,0.35)' }}>
                 <Zap size={20} /> Créer un compte gratuit
               </div>
             </MagneticButton>
             <MagneticButton to="/login">
-              <div style={{ padding: '15px 28px', background: 'transparent', border: '1px solid rgba(0,245,255,0.25)', borderRadius: '12px', color: 'rgba(240,244,255,0.75)', fontSize: '15px', fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
+              <div className="px-5 py-3 sm:px-7 sm:py-4 bg-transparent border border-cyan-500/25 rounded-xl text-white/75 text-sm sm:text-base font-semibold inline-flex items-center gap-2 sm:gap-3">
                 <LogIn size={20} /> Se connecter
               </div>
             </MagneticButton>
-            <a href="#" style={{ textDecoration: 'none' }}>
+            <a href="#" className="no-underline w-full sm:w-auto">
               <div 
-                style={{ padding: '15px 28px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', color: 'rgba(240,244,255,0.9)', fontSize: '15px', fontWeight: '600', display: 'inline-flex', alignItems: 'center', gap: '10px', transition: 'all 0.2s', cursor: 'pointer' }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.borderColor = 'rgba(0,245,255,0.3)' }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)' }}
+                className="px-5 py-3 sm:px-7 sm:py-4 bg-white/5 border border-white/10 rounded-xl text-white/90 text-sm sm:text-base font-semibold flex justify-center items-center gap-2 sm:gap-3 transition-all cursor-pointer hover:bg-white/10 hover:border-cyan-500/30"
               >
                 <Download size={20} color="#00f5ff" /> Télécharger pour Windows
               </div>
@@ -205,11 +203,11 @@ export function LandingPage() {
           </motion.div>
 
           {/* Stats */}
-          <motion.div variants={fadeUp} style={{ display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
+          <motion.div variants={fadeUp} className="flex gap-6 sm:gap-8 flex-wrap justify-center lg:justify-start w-full mt-4">
             {stats.map((s) => (
-              <motion.div key={s.label} variants={fadeUp} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                <span style={{ fontSize: '26px', fontWeight: '800', background: 'linear-gradient(135deg, #00f5ff, #7B2FBE)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-0.02em' }}>{s.value}</span>
-                <span style={{ fontSize: '12px', color: 'rgba(240,244,255,0.4)', fontWeight: '500' }}>{s.label}</span>
+              <motion.div key={s.label} variants={fadeUp} className="flex flex-col gap-1 items-center lg:items-start">
+                <span className="text-2xl sm:text-3xl font-extrabold tracking-tight" style={{ background: 'linear-gradient(135deg, #00f5ff, #7B2FBE)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{s.value}</span>
+                <span className="text-xs sm:text-sm text-white/40 font-medium">{s.label}</span>
               </motion.div>
             ))}
           </motion.div>
@@ -224,7 +222,7 @@ export function LandingPage() {
 
         {/* RIGHT — VAYNA Logo + Chart */}
         <motion.div initial={{ opacity: 0, scale: 0.95, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 1, delay: 0.2, ease: 'easeOut' }}
-          style={{ flex: 1, maxWidth: '440px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '40px' }}>
+          className="flex-1 w-full max-w-md mx-auto lg:max-w-[440px] flex flex-col items-center gap-8 lg:gap-10">
 
           {/* Big VΛYNΛ Logo */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

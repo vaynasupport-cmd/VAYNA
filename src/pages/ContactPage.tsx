@@ -77,7 +77,7 @@ export function ContactPage() {
       </motion.div>
 
       {/* Hero */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-24">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -94,7 +94,7 @@ export function ContactPage() {
             <MessageSquare className="text-primary relative z-10" size={32} style={{ color: '#00f5ff' }} />
             <span className="text-2xl font-bold relative z-10" style={{ color: '#00f5ff' }}>Support & Contact</span>
           </motion.div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">Comment pouvons-nous aider ?</h1>
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">Comment pouvons-nous aider ?</h1>
           <p className="text-lg sm:text-xl max-w-2xl mx-auto" style={{ color: 'rgba(240,244,255,0.5)' }}>Notre équipe est à votre disposition pour résoudre vos problèmes ou répondre à vos questions. Nous vous répondrons dans les plus brefs délais.</p>
         </motion.div>
 
@@ -119,14 +119,14 @@ export function ContactPage() {
               transition={{ delay: 0.3 }}
               className="space-y-6"
             >
-              <div className="p-8 rounded-2xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
+              <div className="p-6 md:p-8 rounded-2xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
                 <h3 className="text-xl font-semibold mb-6 flex items-center gap-3">
                   <Mail style={{ color: '#00f5ff' }} /> Email Direct
                 </h3>
                 <p className="mb-4" style={{ color: 'rgba(240,244,255,0.5)' }}>Vous préférez utiliser votre propre boîte mail ou envoyer des pièces jointes ?</p>
                 <a href="https://mail.google.com/mail/?view=cm&fs=1&to=vayna.support@gmail.com" target="_blank" rel="noopener noreferrer" className="text-lg font-medium hover:underline transition-all" style={{ color: '#00f5ff' }}>vayna.support@gmail.com</a>
               </div>
-              <div className="p-8 rounded-2xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
+              <div className="p-6 md:p-8 rounded-2xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
                 <h3 className="text-xl font-semibold mb-6 flex items-center gap-3">
                   <Zap style={{ color: '#7b2fbe' }} /> Temps de réponse
                 </h3>
@@ -140,7 +140,7 @@ export function ContactPage() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 }}
-              className="p-8 rounded-2xl space-y-6"
+              className="p-6 md:p-8 rounded-2xl space-y-6"
               style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(20px)', boxShadow: '0 20px 40px rgba(0,0,0,0.2)' }}
             >
               <div>
