@@ -124,13 +124,13 @@ export function ContactPage() {
                   <Mail style={{ color: '#00f5ff' }} /> Email Direct
                 </h3>
                 <p className="mb-4" style={{ color: 'rgba(240,244,255,0.5)' }}>Vous préférez utiliser votre propre boîte mail ou envoyer des pièces jointes ?</p>
-                <a href="mailto:vayna.support@gmail.com" className="text-lg font-medium hover:underline transition-all" style={{ color: '#00f5ff' }}>vayna.support@gmail.com</a>
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=vayna.support@gmail.com" target="_blank" rel="noopener noreferrer" className="text-lg font-medium hover:underline transition-all" style={{ color: '#00f5ff' }}>vayna.support@gmail.com</a>
               </div>
               <div className="p-8 rounded-2xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
                 <h3 className="text-xl font-semibold mb-6 flex items-center gap-3">
                   <Zap style={{ color: '#7b2fbe' }} /> Temps de réponse
                 </h3>
-                <p style={{ color: 'rgba(240,244,255,0.5)' }}>Nous répondons généralement en moins de <strong>24 heures</strong> ouvrées. Pour les comptes Premium, le délai est de 2 heures.</p>
+                <p style={{ color: 'rgba(240,244,255,0.5)' }}>Nous répondons généralement en moins de <strong>24 heures</strong> ouvrées.</p>
               </div>
             </motion.div>
 
