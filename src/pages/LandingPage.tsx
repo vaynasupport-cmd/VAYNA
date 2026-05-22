@@ -193,7 +193,7 @@ export function LandingPage() {
                 <LogIn size={20} /> Se connecter
               </div>
             </MagneticButton>
-            <a href="#" className="no-underline w-full sm:w-auto">
+            <a href="https://github.com/vaynasupport-cmd/VAYNA/releases/download/v1.0.0/Vayna.Setup.1.0.0.exe" className="no-underline w-full sm:w-auto" download>
               <div 
                 className="px-5 py-3 sm:px-7 sm:py-4 bg-white/5 border border-white/10 rounded-xl text-white/90 text-sm sm:text-base font-semibold flex justify-center items-center gap-2 sm:gap-3 transition-all cursor-pointer hover:bg-white/10 hover:border-cyan-500/30"
               >
