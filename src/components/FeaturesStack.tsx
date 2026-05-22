@@ -332,7 +332,7 @@ function ShowcaseAutoImport() {
                 border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 boxShadow: '0 10px 30px rgba(0,0,0,0.5)', overflow: 'hidden'
             }}>
-              <img src="/mt5.jpg" alt="MT5" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+              <img src="./mt5.jpg" alt="MT5" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </motion.div>
             <span style={{ fontSize: '12px', fontWeight: '600', color: 'rgba(240,244,255,0.5)' }}>MT5</span>
           </div>
@@ -441,7 +441,7 @@ function ShowcaseStats() {
 
       {/* Main dashboard frame */}
       <BrowserFrame
-        src="/analytic-1.png"
+        src="./analytic-1.png"
         alt="Dashboard central avec equity curve et statistiques"
         url="vayna.io/app/dashboard"
         glowColor="#7B2FBE"
@@ -451,7 +451,7 @@ function ShowcaseStats() {
 
       {/* Floating winrate card */}
       <FloatingCard
-        src="/analytic-3.png"
+        src="./analytic-3.png"
         alt="Statistiques"
         label="Performance"
         glowColor="#10b981"
@@ -466,7 +466,7 @@ function ShowcaseStats() {
 
       {/* Floating P&L distribution card */}
       <FloatingCard
-        src="/analytic-2.png"
+        src="./analytic-2.png"
         alt="Distribution"
         label="Distribution"
         glowColor="#7B2FBE"
@@ -493,7 +493,7 @@ function ShowcaseAnalysis() {
 
       {/* Main stats dark page */}
       <BrowserFrame
-        src="/feat-6.png"
+        src="./feat-6.png"
         alt="Analyse de performance"
         url="vayna.io/app/statistics"
         glowColor="#00f5ff"
@@ -503,7 +503,7 @@ function ShowcaseAnalysis() {
 
       {/* Floating perf par paire */}
       <FloatingCard
-        src="/feat-5.png"
+        src="./feat-5.png"
         alt="Performance détaillée"
         label="Performance"
         glowColor="#10b981"
@@ -560,7 +560,7 @@ function ShowcaseMultiAccounts() {
 
       {/* Main comptes page */}
       <BrowserFrame
-        src="/feat-7.png"
+        src="./feat-7.png"
         alt="Gestion Multi-Comptes"
         url="vayna.io/app/accounts"
         glowColor="#7B2FBE"
@@ -662,7 +662,7 @@ function ShowcasePsychology() {
         {/* Screenshot */}
         <div style={{ padding: '12px', position: 'relative' }}>
           <img
-            src="/feat-8.png"
+            src="./feat-8.png"
             alt="VAYNA Bot IA assistant de trading"
             draggable={false}
             loading="lazy"

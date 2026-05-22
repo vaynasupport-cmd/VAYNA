@@ -132,9 +132,9 @@ export function LandingPage() {
   }, [user, loading, navigate])
 
   const showcaseImages = [
-    { id: 'stats', src: '/showcase-1.png', alt: 'Statistiques' },
-    { id: 'dashboard', src: '/showcase-2.png', alt: 'Dashboard' },
-    { id: 'journal', src: '/showcase-3.png', alt: 'Journal' },
+    { id: 'stats', src: './showcase-1.png', alt: 'Statistiques' },
+    { id: 'dashboard', src: './showcase-2.png', alt: 'Dashboard' },
+    { id: 'journal', src: './showcase-3.png', alt: 'Journal' },
   ]
 
   return (

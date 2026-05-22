@@ -74,7 +74,7 @@ export function MT5Sync() {
     <div className="h-full flex flex-col p-6 overflow-y-auto">
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-violet-500 to-blue-500 flex items-center gap-4">
-          <img src="/mt5-logo.jpg" alt="MT5 Logo" className="w-10 h-10 rounded-lg shadow-[0_0_15px_rgba(139,92,246,0.3)] object-cover" />
+          <img src="./mt5-logo.jpg" alt="MT5 Logo" className="w-10 h-10 rounded-lg shadow-[0_0_15px_rgba(139,92,246,0.3)] object-cover" />
           Synchronisation MT5
         </h1>
         <p className="text-muted-foreground mt-2">
@@ -219,7 +219,7 @@ export function MT5Sync() {
                 <div className="mb-6 flex justify-between items-start">
                   <div>
                     <h2 className="text-xl font-bold flex items-center gap-3">
-                      <img src="/mt5-logo.jpg" alt="MT5 Logo" className="w-6 h-6 rounded shadow-sm object-cover" />
+                      <img src="./mt5-logo.jpg" alt="MT5 Logo" className="w-6 h-6 rounded shadow-sm object-cover" />
                       MT5 Sync
                       {autoImportEnabled ? (
                         <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 uppercase tracking-wider">Actif</span>
