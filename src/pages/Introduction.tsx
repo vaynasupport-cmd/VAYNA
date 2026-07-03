@@ -651,7 +651,7 @@ const Introduction = () => {
   return (
     <AnimatePresence>
       <motion.div
-        className="relative w-full h-screen overflow-hidden"
+        className="relative w-full min-h-screen overflow-x-hidden"
         style={{ background: '#0B0F1A' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -773,9 +773,9 @@ const Introduction = () => {
             MAIN CONTENT — 2 columns
             ══════════════════════════════════════════ */}
         {showContent && (
-          <div className="relative z-10 flex items-center h-[calc(100vh-72px)] px-8 lg:px-16">
+          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-[calc(100vh-72px)] px-6 lg:px-16 py-8 lg:py-0">
             {/* ── LEFT COLUMN (45%) — Identity ── */}
-            <div className="w-[45%] flex flex-col justify-center pr-12">
+            <div className="w-full lg:w-[45%] flex flex-col justify-center pr-0 lg:pr-12 mb-12 lg:mb-0">
               {/* Title */}
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
@@ -793,7 +793,7 @@ const Introduction = () => {
                     transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                   />
                   <motion.span
-                    className="block text-7xl font-medium tracking-[0.25em] relative"
+                    className="block text-5xl md:text-7xl font-medium tracking-[0.15em] md:tracking-[0.25em] relative"
                     style={{
                       background: 'linear-gradient(135deg, #e0f2fe 0%, #93c5fd 30%, #3b82f6 70%, #1e40af 100%)',
                       WebkitBackgroundClip: 'text',
@@ -925,7 +925,7 @@ const Introduction = () => {
             </div>
 
             {/* ── RIGHT COLUMN (55%) — Data visualization ── */}
-            <div className="w-[55%] flex flex-col justify-center pl-4 relative">
+            <div className="w-full lg:w-[55%] flex flex-col justify-center pl-0 lg:pl-4 relative pb-16 lg:pb-0">
               
               {/* ── Floating 3D Curve Above Chart ── */}
               <Floating3DCurve />
@@ -1005,7 +1005,7 @@ const Introduction = () => {
               </motion.div>
 
               {/* Stats row */}
-              <div className="grid grid-cols-3 gap-3 mt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
                 <StatCard
                   icon={BarChart3}
                   label="Win Rate"
