@@ -85,7 +85,7 @@ export function DownloadPage() {
               </div>
               <div className="mt-auto pt-6 w-full">
                 <a
-                  href="/downloads/VAYNA-Android.apk"
+                  href="https://github.com/vaynasupport-cmd/VAYNA/releases/download/android-latest/VAYNA-Android.apk"
                   className="w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-white transition-all hover:scale-[1.02] border border-purple-500/50"
                   style={{ background: 'linear-gradient(135deg, rgba(168,85,247,0.2), rgba(236,72,153,0.2))' }}
                   download
