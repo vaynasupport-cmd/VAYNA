@@ -21,6 +21,8 @@
     "dist:portable": "npm run build && electron-builder --win portable"
   },
   "dependencies": {
+    "@capacitor/android": "^6.1.1",
+    "@capacitor/cli": "^6.1.1",
     "@capacitor/core": "^6.1.1",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
@@ -57,11 +59,10 @@
     "tailwind-merge": "^2.5.0",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^10.0.0",
-    "zustand": "^4.5.4",
-    "@capacitor/android": "^6.1.1",
-    "@capacitor/cli": "^6.1.1"
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@types/express": "^4.17.21",
     "@types/node": "^22.0.0",
     "@types/react": "^18.3.3",
