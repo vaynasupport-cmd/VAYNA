@@ -52,7 +52,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       App.addListener('appUrlOpen', async (event) => {
         const url = event.url
         if (url.startsWith('com.vayna.app://')) {
-          await supabase.auth.getSessionFromUrl({ url })
+          const urlObj = new URL(url)
+          const code = urlObj.searchParams.get('code')
+          if (code) {
+            await supabase.auth.exchangeCodeForSession(code)
+          } else if (urlObj.hash) {
+            const params = new URLSearchParams(urlObj.hash.substring(1))
+            const access_token = params.get('access_token')
+            const refresh_token = params.get('refresh_token')
+            if (access_token && refresh_token) {
+              await supabase.auth.setSession({ access_token, refresh_token })
+            }
+          }
         }
       })
     }
