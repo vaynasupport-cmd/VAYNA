@@ -71,11 +71,14 @@ function GlobalLoader() {
   return null
 }
 
+import { Capacitor } from '@capacitor/core'
+
 /**
  * Inner component that runs the auto-import hook
  */
 function AppContent() {
   const isElectron = navigator.userAgent.toLowerCase().includes('electron')
+  const isNativeApp = isElectron || Capacitor.isNativePlatform()
 
   return (
     <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
@@ -86,14 +89,14 @@ function AppContent() {
         <Suspense fallback={<PageLoader />}>
           <Routes>
             {/* ─── PUBLIC ROUTES ─────────────────────────── */}
-            <Route path="/" element={isElectron ? <Navigate to="/login" replace /> : <LandingPage />} />
+            <Route path="/" element={isNativeApp ? <Navigate to="/login" replace /> : <LandingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             
             {/* Pages marketing uniquement sur le web */}
-            {!isElectron && (
+            {!isNativeApp && (
               <>
                 <Route path="/faq" element={<FAQPage />} />
                 <Route path="/features" element={<FeaturesPage />} />
