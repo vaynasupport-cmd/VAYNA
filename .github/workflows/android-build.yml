@@ -26,6 +26,12 @@ jobs:
       - name: Install dependencies (skip electron postinstall)
         run: npm install --ignore-scripts
 
+      - name: Create .env file for build
+        run: |
+          echo "VITE_SUPABASE_URL=https://ctweznwsyyoryifpvzlv.supabase.co" >> .env
+          echo "VITE_SUPABASE_ANON_KEY=sb_publishable_KoruL_UGpaofPSKfg5bebQ_iMIZO1Qs" >> .env
+          echo "VITE_GEMINI_API_KEY=AIzaSyCEIJc1i9j5sV14KJ6GyW22VosknVg944Y" >> .env
+
       - name: Build Web App
         run: npx vite build
 
