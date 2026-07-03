@@ -22,6 +22,9 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
+import { App } from '@capacitor/app'
+import { Capacitor } from '@capacitor/core'
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [session, setSession] = useState<Session | null>(null)
@@ -44,7 +47,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     )
 
-    return () => subscription.unsubscribe()
+    // Listen to deep links for native app authentication (Google Login)
+    if (Capacitor.isNativePlatform()) {
+      App.addListener('appUrlOpen', async (event) => {
+        const url = event.url
+        if (url.startsWith('com.vayna.app://')) {
+          await supabase.auth.getSessionFromUrl({ url })
+        }
+      })
+    }
+
+    return () => {
+      subscription.unsubscribe()
+      if (Capacitor.isNativePlatform()) {
+        App.removeAllListeners()
+      }
+    }
   }, [])
 
   const signIn = async (email: string, password: string) => {
@@ -110,10 +128,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signInWithGoogle = async () => {
     // Determine the base URL
     const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''
+    
+    // Determine the redirect URL based on platform
+    const isNativeApp = Capacitor.isNativePlatform()
+    const redirectTo = isNativeApp 
+      ? 'com.vayna.app://login-callback' 
+      : `${baseUrl}/#/login`
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${baseUrl}/#/login`,
+        redirectTo,
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',
