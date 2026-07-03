@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { TrendingUp, TrendingDown, Eye, Edit2, Trash2, Image as ImageIcon } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { cn, formatCurrency, formatDate, getResultColor, getResultBgColor } from '@/lib/utils'
+import { cn, formatCurrency, formatDate, getResultBgColor } from '@/lib/utils'
 import type { Trade, Account } from '@/types'
 
 interface MobileTradeCardProps {
