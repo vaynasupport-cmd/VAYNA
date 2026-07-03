@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - master
-  workflow_dispatch: # Allows manual trigger from GitHub UI
+  workflow_dispatch:
 
 jobs:
   build:
@@ -20,11 +20,11 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install dependencies (skip electron postinstall)
+        run: npm install --ignore-scripts
 
       - name: Build Web App
-        run: npm run build:vite
+        run: npx vite build
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -36,15 +36,14 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Capacitor Sync
-        run: |
-          npx cap sync android
+        run: npx cap sync android
 
       - name: Build APK
         working-directory: ./android
-        run: ./gradlew assembleRelease
+        run: chmod +x gradlew && ./gradlew assembleDebug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: vayna-app-release.apk
-          path: android/app/build/outputs/apk/release/app-release-unsigned.apk
+          name: VAYNA-Android
+          path: android/app/build/outputs/apk/debug/app-debug.apk
