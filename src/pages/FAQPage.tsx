@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { VaynaLogo } from '@/components/VaynaLogo'
 
-type Category = 'auth' | 'mt5_sync' | 'accounts' | 'trades' | 'journal' | 'stats' | 'settings' | 'issues' | 'tips'
+type Category = 'auth' | 'mt5_sync' | 'accounts' | 'trades' | 'journal' | 'stats' | 'ai_assistant' | 'settings' | 'issues' | 'tips'
 
 interface FAQItem {
   id: string
@@ -320,6 +320,24 @@ Objectif : Avoir un PF > 1.5 c'est du bon trading.`,
     tags: ['stats', 'profit factor', 'analyse'],
   },
 
+  // Assistant IA
+  {
+    id: 'ai1',
+    category: 'ai_assistant',
+    question: "Qu'est-ce que VAYNA AI (Coach Virtuel) ?",
+    answer: `C'est un assistant intelligent intégré qui analyse vos performances et vous donne des conseils personnalisés basés sur vos trades. VAYNA AI lit vos données statistiques (win rate, profit factor, drawdown) et identifie vos forces et faiblesses.`,
+    tags: ['ia', 'assistant', 'coach', 'analyse'],
+  },
+  {
+    id: 'ai2',
+    category: 'ai_assistant',
+    question: "Comment discuter avec l'assistant ?",
+    answer: `1. Cliquez sur l'onglet "VAYNA AI" dans le menu principal de l'application.
+2. Posez-lui une question comme : "Pourquoi mon win rate a baissé ?" ou "Analyse ma dernière semaine".
+3. L'assistant vous répondra en utilisant les données réelles de vos comptes.`,
+    tags: ['ia', 'chat', 'conseil'],
+  },
+
   // Paramètres
   {
     id: 'q19',
@@ -474,6 +492,7 @@ const categories: { value: Category; label: string; icon: string }[] = [
   { value: 'trades', label: 'Trades', icon: '📊' },
   { value: 'journal', label: 'Journal', icon: '📝' },
   { value: 'stats', label: 'Statistiques', icon: '📈' },
+  { value: 'ai_assistant', label: 'Assistant IA', icon: '🤖' },
   { value: 'settings', label: 'Paramètres', icon: '⚙️' },
   { value: 'issues', label: 'Problèmes', icon: '🆘' },
   { value: 'tips', label: 'Conseils', icon: '💡' },

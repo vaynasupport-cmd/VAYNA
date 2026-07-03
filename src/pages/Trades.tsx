@@ -55,6 +55,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { DatePicker } from '@/components/DatePicker'
 import { cn, formatCurrency, formatDate, getResultColor, getResultBgColor } from '@/lib/utils'
+import { MobileTradeCard } from '@/components/MobileTradeCard'
 import type { Trade, TradeResult } from '@/types'
 
 const results: TradeResult[] = ['TP', 'SL', 'BE', 'GAIN', 'PERTE', 'BE+', 'BE-', 'EN COURS']
@@ -674,14 +675,14 @@ export function Trades() {
       className="space-y-6"
     >
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-0">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Journal de Trading</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Journal de Trading</h1>
+          <p className="text-sm md:text-base text-muted-foreground mt-1">
             Enregistrez et analysez vos trades
           </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-2 md:gap-3">
           <input
             type="file"
             ref={fileInputRef}
@@ -689,87 +690,89 @@ export function Trades() {
             accept=".csv"
             className="hidden"
           />
-          <Button variant="outline" onClick={() => fileInputRef.current?.click()} className="gap-2">
+          <Button variant="outline" onClick={() => fileInputRef.current?.click()} className="gap-1 md:gap-2 h-9 md:h-10 px-2.5 md:px-4">
             <Upload className="h-4 w-4" />
-            Importer
+            <span className="hidden sm:inline">Importer</span>
           </Button>
-          <Button variant="outline" onClick={handleExportCSV} className="gap-2">
+          <Button variant="outline" onClick={handleExportCSV} className="gap-1 md:gap-2 h-9 md:h-10 px-2.5 md:px-4">
             <Download className="h-4 w-4" />
-            Exporter
+            <span className="hidden sm:inline">Exporter</span>
           </Button>
           <Button onClick={() => {
             resetForm()
             setShowAddDialog(true)
-          }} className="gap-2">
+          }} className="gap-1 md:gap-2 h-9 md:h-10 px-2.5 md:px-4">
             <Plus className="h-4 w-4" />
-            Nouveau trade
+            <span>Nouveau</span>
           </Button>
         </div>
       </div>
 
       {/* Filters */}
       <Card>
-        <CardContent className="p-4">
-          <div className="flex flex-wrap gap-4 items-end">
-            <div className="flex-1 min-w-[200px]">
+        <CardContent className="p-3 md:p-4">
+          <div className="flex flex-col gap-3">
+            <div className="w-full">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Rechercher un actif..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 w-full"
                 />
               </div>
             </div>
-            <Select value={resultFilter} onValueChange={setResultFilter}>
-              <SelectTrigger className="w-[150px]">
-                <Filter className="h-4 w-4 mr-2" />
-                <SelectValue placeholder="Résultat" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Tous les résultats</SelectItem>
-                {results.map(r => (
-                  <SelectItem key={r} value={r}>{r}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={directionFilter} onValueChange={setDirectionFilter}>
-              <SelectTrigger className="w-[150px]">
-                <TrendingUp className="h-4 w-4 mr-2" />
-                <SelectValue placeholder="Direction" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Les deux</SelectItem>
-                <SelectItem value="BUY">Achat</SelectItem>
-                <SelectItem value="SELL">Vente</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button
-              variant={showDateFilter || dateFrom || dateTo ? 'default' : 'outline'}
-              onClick={() => setShowDateFilter(!showDateFilter)}
-              className="gap-2"
-            >
-              <Calendar className="h-4 w-4" />
-              {dateFrom || dateTo ? (
-                <span className="text-xs font-semibold">Dates filtrées</span>
-              ) : (
-                <span>Filtrer par date</span>
-              )}
-            </Button>
-            {(dateFrom || dateTo) && (
+            <div className="flex flex-row flex-nowrap overflow-x-auto pb-1 gap-2 hide-scrollbar w-full">
+              <Select value={resultFilter} onValueChange={setResultFilter}>
+                <SelectTrigger className="w-[140px] md:w-[150px] shrink-0">
+                  <Filter className="h-4 w-4 mr-2" />
+                  <SelectValue placeholder="Résultat" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tous résultats</SelectItem>
+                  {results.map(r => (
+                    <SelectItem key={r} value={r}>{r}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Select value={directionFilter} onValueChange={setDirectionFilter}>
+                <SelectTrigger className="w-[140px] md:w-[150px] shrink-0">
+                  <TrendingUp className="h-4 w-4 mr-2" />
+                  <SelectValue placeholder="Direction" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Les deux</SelectItem>
+                  <SelectItem value="BUY">Long (Buy)</SelectItem>
+                  <SelectItem value="SELL">Short (Sell)</SelectItem>
+                </SelectContent>
+              </Select>
               <Button
-                variant="outline"
-                onClick={() => {
-                  setDateFrom('')
-                  setDateTo('')
-                  setShowDateFilter(false)
-                }}
-                className="whitespace-nowrap"
+                variant={showDateFilter || dateFrom || dateTo ? 'default' : 'outline'}
+                onClick={() => setShowDateFilter(!showDateFilter)}
+                className="gap-2 shrink-0"
               >
-                Réinitialiser
+                <Calendar className="h-4 w-4" />
+                {dateFrom || dateTo ? (
+                  <span className="text-xs font-semibold">Dates filtrées</span>
+                ) : (
+                  <span>Filtrer par date</span>
+                )}
               </Button>
-            )}
+              {(dateFrom || dateTo) && (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setDateFrom('')
+                    setDateTo('')
+                    setShowDateFilter(false)
+                  }}
+                  className="whitespace-nowrap shrink-0"
+                >
+                  Réinitialiser
+                </Button>
+              )}
+            </div>
           </div>
 
           {/* Date Filter Section (Collapsible) */}
@@ -800,8 +803,77 @@ export function Trades() {
         </CardContent>
       </Card>
 
-      {/* Trades Table */}
-      <div className="space-y-2">
+      {/* Trades — Mobile Card View */}
+      <div className="md:hidden space-y-3">
+        <div className="flex justify-end">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowDeleteAllDialog(true)}
+            className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive h-7 px-2 text-xs transition-colors"
+          >
+            <Trash2 className="h-3.5 w-3.5 mr-1.5" />
+            Vider l'historique
+          </Button>
+        </div>
+        {paginatedTrades.map((trade, index) => (
+          <MobileTradeCard
+            key={trade.id}
+            trade={trade}
+            account={accounts.find(a => a.id === trade.accountId)}
+            onView={setViewingTradeDetails}
+            onEdit={openEditDialog}
+            onDelete={setDeletingTrade}
+            onScreenshots={viewScreenshots}
+            index={index}
+          />
+        ))}
+        {filteredTrades.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted mb-3">
+              <TrendingUp className="h-7 w-7 text-muted-foreground" />
+            </div>
+            <h3 className="text-base font-medium">Aucun trade trouvé</h3>
+            <p className="text-sm text-muted-foreground mt-1">Commencez par ajouter votre premier trade</p>
+            <Button onClick={() => setShowAddDialog(true)} className="mt-4 gap-2">
+              <Plus className="h-4 w-4" />
+              Ajouter un trade
+            </Button>
+          </div>
+        )}
+        {/* Mobile pagination */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between px-1 py-3">
+            <p className="text-xs text-muted-foreground">
+              {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, filteredTrades.length)} / {filteredTrades.length}
+            </p>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="h-8 w-8 p-0"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <span className="text-xs tabular-nums">{currentPage}/{totalPages}</span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+                className="h-8 w-8 p-0"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Trades Table — Desktop Only */}
+      <div className="hidden md:block space-y-2">
         <div className="flex justify-end">
           <Button
             variant="ghost"
@@ -1040,7 +1112,7 @@ export function Trades() {
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 pt-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="mb-2 block text-sm font-medium">Compte</label>
                 <Select
@@ -1086,7 +1158,7 @@ export function Trades() {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               <Input
                 label="Actif"
                 placeholder="EURUSD"
@@ -1113,7 +1185,7 @@ export function Trades() {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               <Input
                 label="Risque (%)"
                 type="number"
@@ -1195,7 +1267,7 @@ export function Trades() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="mb-2 block text-sm font-medium">Tag émotionnel</label>
                 <Select

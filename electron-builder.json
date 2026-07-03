@@ -9,6 +9,7 @@
   "files": [
     "dist/**/*",
     "dist-electron/**/*",
+    "build/**/*",
     "package.json"
   ],
   "protocols": [
@@ -20,8 +21,7 @@
   "win": {
     "target": "nsis",
     "icon": "build/icon.ico",
-    "signAndEditExecutable": false,
-    "forceCodeSigning": false
+    "signAndEditExecutable": false
   },
   "nsis": {
     "oneClick": false,

@@ -125,14 +125,14 @@ export function Statistics() {
       className="space-y-6"
     >
       {/* Header */}
-      <motion.div variants={itemVariants} className="flex items-center justify-between">
+      <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-0">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Statistiques Avancées</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Statistiques Avancées</h1>
+          <p className="text-sm md:text-base text-muted-foreground mt-1">
             Analyse détaillée de votre performance
           </p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-2 md:gap-4">
           <PeriodSelector />
           <AccountSelector />
         </div>
@@ -181,16 +181,16 @@ export function Statistics() {
         viewport={{ once: true, margin: '-100px' }}
       >
         <Tabs defaultValue="performance" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 lg:w-[600px]">
-            <TabsTrigger value="performance">Performance</TabsTrigger>
-            <TabsTrigger value="trades">Trades</TabsTrigger>
-            <TabsTrigger value="drawdown">Drawdown</TabsTrigger>
-            <TabsTrigger value="streaks">Séries</TabsTrigger>
-            <TabsTrigger value="analyse">Analyse</TabsTrigger>
+          <TabsList className="flex w-full overflow-x-auto hide-scrollbar justify-start md:grid md:grid-cols-5 lg:w-[600px] h-auto p-1 rounded-xl">
+            <TabsTrigger value="performance" className="whitespace-nowrap px-4 py-2">Performance</TabsTrigger>
+            <TabsTrigger value="trades" className="whitespace-nowrap px-4 py-2">Trades</TabsTrigger>
+            <TabsTrigger value="drawdown" className="whitespace-nowrap px-4 py-2">Drawdown</TabsTrigger>
+            <TabsTrigger value="streaks" className="whitespace-nowrap px-4 py-2">Séries</TabsTrigger>
+            <TabsTrigger value="analyse" className="whitespace-nowrap px-4 py-2">Analyse</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="performance" className="space-y-6 mt-6">
-            <div className="grid gap-6 lg:grid-cols-2">
+          <TabsContent value="performance" className="space-y-6 mt-6 min-w-0">
+            <div className="grid gap-6 lg:grid-cols-2 min-w-0">
               {/* Averages */}
               <Card>
                 <CardHeader>
@@ -388,8 +388,8 @@ export function Statistics() {
             )}
           </TabsContent>
 
-          <TabsContent value="trades" className="space-y-6 mt-6">
-            <div className="grid gap-6 lg:grid-cols-3">
+          <TabsContent value="trades" className="space-y-6 mt-6 min-w-0">
+            <div className="grid gap-6 lg:grid-cols-3 min-w-0">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg font-semibold">Trades Gagnants</CardTitle>
@@ -481,8 +481,8 @@ export function Statistics() {
             </div>
           </TabsContent>
 
-          <TabsContent value="drawdown" className="space-y-6 mt-6">
-            <Card>
+          <TabsContent value="drawdown" className="space-y-6 mt-6 min-w-0">
+            <Card className="min-w-0">
               <CardHeader>
                 <CardTitle className="text-lg font-semibold flex items-center gap-2">
                   <TrendingDown className="h-5 w-5" />
@@ -517,8 +517,8 @@ export function Statistics() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="streaks" className="space-y-6 mt-6">
-            <div className="grid gap-6 lg:grid-cols-2">
+          <TabsContent value="streaks" className="space-y-6 mt-6 min-w-0">
+            <div className="grid gap-6 lg:grid-cols-2 min-w-0">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg font-semibold flex items-center gap-2">
@@ -554,8 +554,8 @@ export function Statistics() {
             </div>
           </TabsContent>
 
-          <TabsContent value="analyse" className="space-y-6 mt-6">
-            <div className="grid gap-6 lg:grid-cols-2">
+          <TabsContent value="analyse" className="space-y-6 mt-6 min-w-0">
+            <div className="grid gap-6 lg:grid-cols-2 min-w-0">
               {/* Best Day */}
               <Card>
                 <CardHeader>

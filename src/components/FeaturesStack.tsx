@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import {
-  Zap, BarChart2, Target, Brain,
+  BarChart2, Target, Brain,
   CheckCircle, Activity,
 } from 'lucide-react'
 import { VaynaLogo } from '@/components/VaynaLogo'
@@ -137,7 +137,6 @@ function FloatingCard({
   label,
   glowColor = '#00f5ff',
   delay = 0.4,
-  floatDuration = 5,
   darkFilter = false,
   containerStyle = {},
 }: {
@@ -146,7 +145,6 @@ function FloatingCard({
   label?: string
   glowColor?: string
   delay?: number
-  floatDuration?: number
   darkFilter?: boolean
   containerStyle?: React.CSSProperties
 }) {
@@ -169,7 +167,6 @@ function FloatingCard({
         boxShadow: `0 24px 60px rgba(0,0,0,0.65), 0 0 40px ${glowColor}15`,
         background: 'rgba(12,12,22,0.95)',
         backdropFilter: 'blur(16px)',
-        animation: `feat-float ${floatDuration}s ease-in-out infinite`,
       }}>
         {/* Optional label header */}
         {label && (
@@ -325,8 +322,6 @@ function ShowcaseAutoImport() {
           {/* MT5 Node */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
             <motion.div 
-              animate={{ y: [0, -5, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
               style={{
                 width: '56px', height: '56px', borderRadius: '16px', background: '#fff',
                 border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -339,8 +334,7 @@ function ShowcaseAutoImport() {
 
           {/* Data Connection & Packets (Signal Syncing) */}
           <div style={{ flex: 1, height: '60px', position: 'relative', margin: '0 24px', display: 'flex', alignItems: 'center', minWidth: '160px', overflow: 'hidden' }}>
-            {/* Background dashed line */}
-            <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, transform: 'translateY(-50%)', height: '1px', borderTop: '2px dashed rgba(0,245,255,0.15)' }} />
+            {/* Background dashed line removed */}
             
             {/* Signal 1 (Cyan) */}
             <motion.div
@@ -371,18 +365,17 @@ function ShowcaseAutoImport() {
               {/* Tip of the signal */}
               <div style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', width: '4px', height: '4px', borderRadius: '50%', background: '#fff', boxShadow: '0 0 10px #fff, 0 0 20px #10b981' }} />
             </motion.div>
+
           </div>
 
           {/* VAYNA Cloud Node */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
             <motion.div 
-              animate={{ scale: [1, 1.05, 1], boxShadow: ['0 0 0 rgba(0,245,255,0)', '0 0 30px rgba(0,245,255,0.2)', '0 0 0 rgba(0,245,255,0)'] }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
               style={{
                 width: '64px', height: '64px', borderRadius: '20px', background: 'rgba(10,10,20,0.95)',
                 border: '1px solid rgba(0,245,255,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <div style={{ animation: 'feat-spin 4s linear infinite' }}>
+              <div>
                 <VaynaLogo size={32} />
               </div>
             </motion.div>
@@ -395,7 +388,7 @@ function ShowcaseAutoImport() {
           padding: '8px 16px', borderRadius: '100px', background: 'rgba(16,185,129,0.1)',
           border: '1px solid rgba(16,185,129,0.2)', display: 'flex', alignItems: 'center', gap: '8px'
         }}>
-          <motion.div animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 1.5, repeat: Infinity }}>
+          <motion.div>
             <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 10px #10b981' }} />
           </motion.div>
           <span style={{ fontSize: '11px', fontWeight: '700', color: '#10b981', letterSpacing: '0.05em' }}>CONNEXION ACTIVE</span>
@@ -404,8 +397,6 @@ function ShowcaseAutoImport() {
         {/* Floating Sync Notifications */}
         <div style={{ position: 'absolute', bottom: '-40px', left: '50%', transform: 'translateX(-50%)', width: '100%', display: 'flex', justifyContent: 'center' }}>
           <motion.div
-            animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             style={{
               padding: '12px 20px', borderRadius: '14px', background: 'rgba(15,15,28,0.98)',
               border: '1px solid rgba(255,255,255,0.06)', boxShadow: '0 20px 40px rgba(0,0,0,0.6)',
@@ -413,7 +404,7 @@ function ShowcaseAutoImport() {
             }}
           >
             <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(0,245,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <Zap size={16} style={{ color: '#00f5ff' }} />
+              <Activity size={16} style={{ color: '#00f5ff' }} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
               <span style={{ fontSize: '13px', fontWeight: '700', color: '#f0f4ff' }}>Nouveau trade détecté</span>
@@ -456,7 +447,6 @@ function ShowcaseStats() {
         label="Performance"
         glowColor="#10b981"
         delay={0.5}
-        floatDuration={5}
         containerStyle={{
           bottom: '-12px',
           left: '-14px',
@@ -471,7 +461,6 @@ function ShowcaseStats() {
         label="Distribution"
         glowColor="#7B2FBE"
         delay={0.7}
-        floatDuration={6}
         containerStyle={{
           top: '8%',
           right: '-10px',
@@ -508,7 +497,6 @@ function ShowcaseAnalysis() {
         label="Performance"
         glowColor="#10b981"
         delay={0.5}
-        floatDuration={5.5}
         containerStyle={{
           bottom: '-8px',
           right: '-10px',
@@ -533,7 +521,6 @@ function ShowcaseAnalysis() {
           boxShadow: '0 12px 40px rgba(0,0,0,0.5), 0 0 20px rgba(16,185,129,0.1)',
           backdropFilter: 'blur(16px)',
           zIndex: 20,
-          animation: 'feat-float 4.5s ease-in-out infinite',
           display: 'flex',
           alignItems: 'center',
           gap: '8px',
@@ -585,7 +572,6 @@ function ShowcaseMultiAccounts() {
           boxShadow: '0 12px 40px rgba(0,0,0,0.5), 0 0 20px rgba(123,47,190,0.12)',
           backdropFilter: 'blur(16px)',
           zIndex: 20,
-          animation: 'feat-float-reverse 4s ease-in-out infinite',
           display: 'flex',
           alignItems: 'center',
           gap: '8px',
@@ -680,34 +666,12 @@ function ShowcasePsychology() {
 export function FeaturesStack() {
   return (
     <>
-      {/* ── Injected keyframes ── */}
-      <style>{`
-        @keyframes feat-float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-12px); }
-        }
-        @keyframes feat-float-reverse {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(10px); }
-        }
-        @keyframes feat-glow-pulse {
-          0%, 100% { opacity: 0.5; }
-          50% { opacity: 1; }
-        }
-        @keyframes feat-shimmer {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-        @keyframes feat-spin {
-          from { transform: rotateY(0deg); }
-          to { transform: rotateY(360deg); }
-        }
-      `}</style>
+      {/* ── Removed keyframes ── */}
 
       <div className="flex flex-col gap-10 sm:gap-[60px] max-w-7xl mx-auto px-4 sm:px-8">
         {/* FEATURE 1 — Synchronisation */}
         <BentoCard
-          icon={Zap}
+          icon={Activity}
           color="#00f5ff"
           badge="Synchronisation"
           headline={<>Vos trades remontent<br /><span style={{ color: '#00f5ff', textShadow: '0 0 30px rgba(0,245,255,0.3)' }}>en temps réel.</span></>}

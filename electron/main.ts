@@ -1,7 +1,7 @@
-import { app, BrowserWindow, ipcMain, dialog, shell } from 'electron'
+import { app, BrowserWindow, ipcMain, dialog, shell, Menu } from 'electron'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { existsSync } from 'fs'
+import fs, { existsSync } from 'fs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -42,19 +42,24 @@ function createWindow() {
   console.log('📦 Preload path:', preloadPath)
   console.log('📦 Preload exists:', existsSync(preloadPath))
 
+  // Remove the default menu bar for a clean, professional look
+  Menu.setApplicationMenu(null)
+
   mainWindow = new BrowserWindow({
     width: 1600,
     height: 1000,
     minWidth: 1200,
     minHeight: 700,
-    titleBarStyle: 'hiddenInset',
-    show: false,
+    autoHideMenuBar: true,
+    frame: false,
+    backgroundColor: '#0a0a0f',
+    show: true,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
       preload: preloadPath,
     },
-    icon: path.join(__dirname, '../build/icon.png'),
+    icon: path.join(__dirname, '../build/icon.ico'),
   })
 
   if (isDev) {
@@ -64,9 +69,8 @@ function createWindow() {
     mainWindow.loadFile(path.join(__dirname, '../dist/index.html'))
   }
 
-  mainWindow.once('ready-to-show', () => {
-    mainWindow?.show()
-  })
+  mainWindow.on('maximize', () => mainWindow?.webContents.send('window:maximize-change', true))
+  mainWindow.on('unmaximize', () => mainWindow?.webContents.send('window:maximize-change', false))
 
   mainWindow.on('closed', () => {
     mainWindow = null
@@ -77,9 +81,28 @@ function createWindow() {
     shell.openExternal(url)
     return { action: 'deny' }
   })
-
-  // Handle external links
 }
+
+// ─── IPC: Window Controls ─────────────────────────────────────────────
+ipcMain.handle('window:minimize', () => {
+  mainWindow?.minimize()
+})
+
+ipcMain.handle('window:maximize', () => {
+  if (mainWindow?.isMaximized()) {
+    mainWindow.unmaximize()
+  } else {
+    mainWindow?.maximize()
+  }
+})
+
+ipcMain.handle('window:close', () => {
+  mainWindow?.close()
+})
+
+ipcMain.handle('window:isMaximized', () => {
+  return mainWindow?.isMaximized() ?? false
+})
 
 // ─── App Events ───────────────────────────────────────────────────────────────
 app.whenReady().then(async () => {
@@ -117,7 +140,6 @@ ipcMain.handle('fs:selectImage', async () => {
   })
 
   if (!result.canceled && result.filePaths.length > 0) {
-    const fs = await import('fs')
     const filePath = result.filePaths[0]
     const buffer = fs.readFileSync(filePath)
     return {
@@ -136,7 +158,6 @@ ipcMain.handle('fs:saveCSV', async (_, data: string, defaultName: string) => {
   })
 
   if (!result.canceled && result.filePath) {
-    const fs = await import('fs')
     fs.writeFileSync(result.filePath, data, 'utf-8')
     return true
   }

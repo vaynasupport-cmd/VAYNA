@@ -59,6 +59,15 @@ module.exports = {
           orange: "#F59E0B",
           cyan: "#06B6D4",
         },
+        gold: {
+          DEFAULT: "#C8A35A", // Couleur or élégante de l'image
+          400: "#D4B475",
+          500: "#C8A35A",
+          600: "#B58E43",
+        },
+      },
+      fontFamily: {
+        serif: ['"Playfair Display"', 'Georgia', 'serif'],
       },
       borderRadius: {
         lg: "var(--radius)",

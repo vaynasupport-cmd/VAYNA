@@ -12,8 +12,7 @@ import {
   LogOut,
   AlertTriangle,
   Sun,
-  Moon,
-  Cloud
+  Moon
 } from 'lucide-react'
 import { useTheme } from '@/components/ThemeProvider'
 import { useAuth } from '@/hooks/useAuth'
@@ -34,7 +33,7 @@ const menuItems: MenuItem[] = [
   { path: '/app/trades', icon: TrendingUp, label: 'Journal' },
   { path: '/app/statistics', icon: BarChart3, label: 'Statistiques' },
   { path: '/app/journal', icon: BookOpen, label: 'Notes' },
-  { path: '/app/mt5-sync', icon: Cloud, label: 'MT5 Sync', isSpecial: true },
+  { path: '/app/mt5-sync', icon: null, label: 'MT5 Sync', isSpecial: true },
 ]
 
 export function Sidebar() {
@@ -50,13 +49,18 @@ export function Sidebar() {
     navigate('/')
   }
 
+  const isElectron = navigator.userAgent.toLowerCase().includes('electron')
+
   return (
     <>
       <motion.aside
       initial={false}
       animate={{ width: sidebarCollapsed ? 80 : 260 }}
       transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-      className="fixed left-0 top-0 z-40 h-screen border-r border-border/60 bg-card/80 backdrop-blur-xl shadow-[4px_0_24px_rgba(0,0,0,0.2)]"
+      className={cn(
+        "fixed left-0 z-40 border-r border-border/60 bg-card/80 backdrop-blur-xl shadow-[4px_0_24px_rgba(0,0,0,0.2)]",
+        isElectron ? "top-10 h-[calc(100vh-40px)]" : "top-0 h-screen"
+      )}
     >
       {/* Logo Header */}
       <div className={cn(
@@ -174,10 +178,18 @@ export function Sidebar() {
                   transition={{ delay: index * 0.05 }}
                   className="relative flex items-center gap-3 w-full"
                 >
-                  <item.icon className={cn(
-                    "h-[18px] w-[18px] flex-shrink-0 transition-all duration-200",
-                    isActive ? (item.isSpecial ? "text-white drop-shadow-md" : "text-primary drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]") : (item.isSpecial ? "text-violet-400 group-hover:text-violet-300" : "group-hover:text-foreground")
-                  )} />
+                  {item.icon ? (
+                    <item.icon className={cn(
+                      "h-[18px] w-[18px] flex-shrink-0 transition-all duration-200",
+                      isActive ? (item.isSpecial ? "text-white drop-shadow-md" : "text-primary drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]") : (item.isSpecial ? "text-violet-400 group-hover:text-violet-300" : "group-hover:text-foreground")
+                    )} />
+                  ) : (
+                    <img
+                      src="./mt5.jpg"
+                      alt="MT5"
+                      className="h-[18px] w-[18px] flex-shrink-0 rounded-[4px] object-cover"
+                    />
+                  )}
                   <AnimatePresence>
                     {!sidebarCollapsed && (
                       <motion.span

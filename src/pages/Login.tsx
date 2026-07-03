@@ -74,6 +74,8 @@ export function Login() {
     }
   }
 
+  const isElectron = typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().includes('electron')
+
   return (
     <div className="auth-page">
       <div className="auth-bg">
@@ -82,20 +84,28 @@ export function Login() {
         <div className="auth-glow auth-glow-2" />
       </div>
 
-      <Link
-        to="/"
-        className="fixed top-6 left-6 md:top-8 md:left-8 flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors z-10"
-      >
-        <ChevronLeft size={16} />
-        Retour à l'accueil
-      </Link>
+      {!isElectron && (
+        <Link
+          to="/"
+          className="fixed left-6 md:left-8 flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors z-10 top-6 md:top-8"
+        >
+          <ChevronLeft size={16} />
+          Retour à l'accueil
+        </Link>
+      )}
 
       <div className="auth-container">
         {/* Logo */}
         <div className="auth-logo justify-center w-full flex mb-8">
-          <Link to="/">
-            <VaynaLogo size={36} showText />
-          </Link>
+          {isElectron ? (
+            <div className="cursor-default">
+              <VaynaLogo size={36} showText />
+            </div>
+          ) : (
+            <Link to="/">
+              <VaynaLogo size={36} showText />
+            </Link>
+          )}
         </div>
 
         <div className="auth-card">

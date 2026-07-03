@@ -1,6 +1,13 @@
 // Minimal ElectronAPI — database operations are now handled by Supabase directly.
 // File system helpers + MT auto-import listener exposed via contextBridge.
 export interface ElectronAPI {
+  windowControls: {
+    minimize: () => Promise<void>
+    maximize: () => Promise<void>
+    close: () => Promise<void>
+    isMaximized: () => Promise<boolean>
+    onMaximizeChange: (callback: (isMaximized: boolean) => void) => void
+  }
   fs: {
     selectImage: () => Promise<{ data: string; name: string } | null>
     saveCSV: (data: string, defaultName: string) => Promise<boolean>

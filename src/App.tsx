@@ -15,6 +15,7 @@ const ResetPassword = lazy(() => import('@/pages/ResetPassword').then(m => ({ de
 const FAQPage = lazy(() => import('@/pages/FAQPage').then(m => ({ default: m.FAQPage })))
 const FeaturesPage = lazy(() => import('@/pages/FeaturesPage').then(m => ({ default: m.FeaturesPage })))
 const ContactPage = lazy(() => import('@/pages/ContactPage').then(m => ({ default: m.ContactPage })))
+const DownloadPage = lazy(() => import('@/pages/DownloadPage').then(m => ({ default: m.DownloadPage })))
 
 // App pages
 const Introduction = lazy(() => import('@/pages/Introduction').then(m => ({ default: m.Introduction })))
@@ -43,6 +44,7 @@ function PageLoader() {
 
 import { useDatabase } from '@/hooks/useDatabase'
 import { useStore } from '@/hooks/useStore'
+import { TitleBar } from '@/components/TitleBar'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -73,57 +75,69 @@ function GlobalLoader() {
  * Inner component that runs the auto-import hook
  */
 function AppContent() {
+  const isElectron = navigator.userAgent.toLowerCase().includes('electron')
+
   return (
     <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <GlobalLoader />
-      <ScrollToTop />
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          {/* ─── PUBLIC ROUTES ─────────────────────────── */}
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/faq" element={<FAQPage />} />
-          <Route path="/features" element={<FeaturesPage />} />
-          <Route path="/contact" element={<ContactPage />} />
+      {isElectron && <TitleBar />}
+      <div className={isElectron ? "pt-10" : ""}>
+        <GlobalLoader />
+        <ScrollToTop />
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            {/* ─── PUBLIC ROUTES ─────────────────────────── */}
+            <Route path="/" element={isElectron ? <Navigate to="/login" replace /> : <LandingPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            
+            {/* Pages marketing uniquement sur le web */}
+            {!isElectron && (
+              <>
+                <Route path="/faq" element={<FAQPage />} />
+                <Route path="/features" element={<FeaturesPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/download" element={<DownloadPage />} />
+              </>
+            )}
 
-          {/* ─── PROTECTED: Introduction (splash) ──────── */}
-          <Route
-            path="/intro"
-            element={
-              <ProtectedRoute>
-                <Introduction />
-              </ProtectedRoute>
-            }
-          />
+            {/* ─── PROTECTED: Introduction (splash) ──────── */}
+            <Route
+              path="/intro"
+              element={
+                <ProtectedRoute>
+                  <Introduction />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* ─── PROTECTED: App with Sidebar Layout ────── */}
-          <Route
-            path="/app"
-            element={
-              <ProtectedRoute>
-                <Layout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<Navigate to="dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="accounts" element={<Accounts />} />
-            <Route path="trades" element={<Trades />} />
-            <Route path="statistics" element={<Statistics />} />
-            <Route path="journal" element={<Journal />} />
-            <Route path="mt5-sync" element={<MT5Sync />} />
-            <Route path="settings" element={<Settings />} />
-            <Route path="faq" element={<FAQ />} />
-          </Route>
+            {/* ─── PROTECTED: App with Sidebar Layout ────── */}
+            <Route
+              path="/app"
+              element={
+                <ProtectedRoute>
+                  <Layout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="accounts" element={<Accounts />} />
+              <Route path="trades" element={<Trades />} />
+              <Route path="statistics" element={<Statistics />} />
+              <Route path="journal" element={<Journal />} />
+              <Route path="mt5-sync" element={<MT5Sync />} />
+              <Route path="settings" element={<Settings />} />
+              <Route path="faq" element={<FAQ />} />
+            </Route>
 
-          {/* ─── CATCH ALL ─────────────────────────────── */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Suspense>
-      <Toaster />
+            {/* ─── CATCH ALL ─────────────────────────────── */}
+            <Route path="*" element={<Navigate to={isElectron ? "/login" : "/"} replace />} />
+          </Routes>
+        </Suspense>
+        <Toaster />
+      </div>
     </HashRouter>
   )
 }

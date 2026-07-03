@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Mail, MessageSquare, Send, CheckCircle, ArrowLeft, Zap } from 'lucide-react'
+import { Mail, MessageSquare, Send, CheckCircle, ArrowLeft, Clock } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Input } from '@/components/ui/input'
 import { VaynaLogo } from '@/components/VaynaLogo'
@@ -128,7 +128,7 @@ export function ContactPage() {
               </div>
               <div className="p-6 md:p-8 rounded-2xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
                 <h3 className="text-xl font-semibold mb-6 flex items-center gap-3">
-                  <Zap style={{ color: '#7b2fbe' }} /> Temps de réponse
+                  <Clock style={{ color: '#00f5ff' }} /> Temps de réponse
                 </h3>
                 <p style={{ color: 'rgba(240,244,255,0.5)' }}>Nous répondons généralement en moins de <strong>24 heures</strong> ouvrées.</p>
               </div>

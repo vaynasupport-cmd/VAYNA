@@ -288,7 +288,7 @@ export function Dashboard() {
     <motion.div variants={container} initial="hidden" animate="show" className="space-y-6">
 
       {/* ── Header ── */}
-      <motion.div variants={item} className="flex items-center justify-between">
+      <motion.div variants={item} className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-0">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <motion.div
@@ -297,17 +297,17 @@ export function Dashboard() {
             >
               <Sparkles className="h-5 w-5 text-primary opacity-70" />
             </motion.div>
-            <h1 className="text-3xl font-black tracking-tight">Dashboard Central</h1>
+            <h1 className="text-2xl md:text-3xl font-black tracking-tight">Dashboard Central</h1>
           </div>
           <p className="text-sm text-muted-foreground">
             La clé du succès est la constance.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 md:gap-3">
           <Badge
             variant="outline"
             className={cn(
-              "cursor-pointer transition-all h-10 px-3 gap-2 border shadow-sm select-none",
+              "cursor-pointer transition-all h-9 md:h-10 px-2 md:px-3 gap-1.5 md:gap-2 border shadow-sm select-none",
               autoImportEnabled
                 ? "bg-trading-green/10 text-trading-green border-trading-green/30 hover:bg-trading-green/20"
                 : "bg-muted/50 text-muted-foreground border-border/50 hover:bg-muted"
@@ -355,16 +355,16 @@ export function Dashboard() {
 
             <CardContent className="relative p-6">
               {/* Account header */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
+              <div className="flex items-center justify-between mb-4 md:mb-6">
+                <div className="flex items-center gap-3 md:gap-4">
                   <motion.div
                     whileHover={{ scale: 1.08, rotate: 5 }}
-                    className="flex h-12 w-12 items-center justify-center rounded-xl bg-background/60 border border-border/50"
+                    className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl bg-background/60 border border-border/50"
                   >
-                    <Wallet className="h-6 w-6 text-primary" />
+                    <Wallet className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                   </motion.div>
                   <div>
-                    <h2 className="text-xl font-bold leading-tight">{selectedAccount.name}</h2>
+                    <h2 className="text-lg md:text-xl font-bold leading-tight">{selectedAccount.name}</h2>
                     {selectedAccount.propFirm && (
                       <p className="text-xs text-muted-foreground uppercase tracking-widest mt-0.5">
                         {selectedAccount.propFirm}
@@ -424,7 +424,7 @@ export function Dashboard() {
                     </p>
                     <div className="flex items-center gap-1">
                       {Icon && <Icon className={cn("h-4 w-4", cls)} />}
-                      <p className={cn("text-2xl font-black tracking-tight number-font", cls)}>
+                      <p className={cn("text-lg md:text-2xl font-black tracking-tight number-font", cls)}>
                         {value}
                       </p>
                     </div>

@@ -153,18 +153,18 @@ export function Accounts() {
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="flex items-center justify-between"
+        className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-0"
       >
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Wallet className="h-6 w-6 text-primary opacity-80" />
-            <h1 className="text-3xl font-black tracking-tight">Comptes de Trading</h1>
+            <Wallet className="h-5 w-5 md:h-6 md:w-6 text-primary opacity-80" />
+            <h1 className="text-2xl md:text-3xl font-black tracking-tight">Comptes de Trading</h1>
           </div>
           <p className="text-sm text-muted-foreground">
             Gérez vos comptes Prop Firms et suivez vos objectifs
           </p>
         </div>
-        <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+        <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="self-start md:self-auto">
           <Button onClick={() => setShowAddDialog(true)} className="gap-2">
             <Plus className="h-4 w-4" />
             Nouveau compte

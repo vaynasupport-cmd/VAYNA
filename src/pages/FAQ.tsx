@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 
-type Category = 'auth' | 'accounts' | 'trades' | 'journal' | 'stats' | 'settings' | 'issues' | 'tips'
+type Category = 'auth' | 'mt5_sync' | 'accounts' | 'trades' | 'journal' | 'stats' | 'ai_assistant' | 'settings' | 'issues' | 'tips'
 
 interface FAQItem {
   id: string
@@ -65,6 +65,35 @@ Avantages :
 2. Cliquez sur "Déconnexion"
 3. Vous serez redirigé vers la page d'accueil`,
     tags: ['déconnexion', 'sécurité'],
+  },
+
+  // Auto-Import MetaTrader 5
+  {
+    id: 'mt5_sync1',
+    category: 'mt5_sync',
+    question: 'Comment relier mon compte MetaTrader 5 ?',
+    answer: `1. Allez dans les Paramètres de VAYNA > onglet MT5 Sync.
+2. Renseignez votre serveur broker (ex: FTMO-Demo), votre login et votre mot de passe investisseur.
+3. C'est fait ! La synchronisation sécurisée et en lecture seule rapatrie automatiquement vos trades.`,
+    tags: ['mt5', 'auto-import', 'sync'],
+  },
+  {
+    id: 'mt5_sync2',
+    category: 'mt5_sync',
+    question: 'VAYNA a-t-il accès à mes identifiants broker ?',
+    answer: `Non, absolument pas. 
+
+Notre connexion utilise le mot de passe Investisseur, qui est strictement limité à la LECTURE SEULE. Nous ne pouvons exécuter aucun trade sur votre compte. De plus, la synchronisation tourne localement.`,
+    tags: ['sécurité', 'broker', 'identifiants', 'mt5'],
+  },
+  {
+    id: 'mt5_sync3',
+    category: 'mt5_sync',
+    question: 'Je trade sur des comptes Prop Firm, est-ce compatible ?',
+    answer: `Oui, c'est parfait pour ça.
+    
+Vous pouvez lier vos comptes Prop Firm (Topstep, FTMO, Alpha Capital, etc.) en renseignant simplement leurs identifiants. VAYNA les synchronise en parallèle.`,
+    tags: ['prop firm', 'ftmo', 'challenge'],
   },
 
   // Gestion des comptes
@@ -290,6 +319,24 @@ Objectif : Avoir un PF > 1.5 c'est du bon trading.`,
     tags: ['stats', 'profit factor', 'analyse'],
   },
 
+  // Assistant IA
+  {
+    id: 'ai1',
+    category: 'ai_assistant',
+    question: "Qu'est-ce que VAYNA AI (Coach Virtuel) ?",
+    answer: `C'est un assistant intelligent intégré qui analyse vos performances et vous donne des conseils personnalisés basés sur vos trades. VAYNA AI lit vos données statistiques (win rate, profit factor, drawdown) et identifie vos forces et faiblesses.`,
+    tags: ['ia', 'assistant', 'coach', 'analyse'],
+  },
+  {
+    id: 'ai2',
+    category: 'ai_assistant',
+    question: "Comment discuter avec l'assistant ?",
+    answer: `1. Cliquez sur l'onglet "VAYNA AI" dans le menu principal de l'application.
+2. Posez-lui une question comme : "Pourquoi mon win rate a baissé ?" ou "Analyse ma dernière semaine".
+3. L'assistant vous répondra en utilisant les données réelles de vos comptes.`,
+    tags: ['ia', 'chat', 'conseil'],
+  },
+
   // Paramètres
   {
     id: 'q19',
@@ -439,10 +486,12 @@ Pourquoi ?
 
 const categories: { value: Category; label: string; icon: string }[] = [
   { value: 'auth', label: 'Compte & Connexion', icon: '🔐' },
+  { value: 'mt5_sync', label: 'Import Auto MT5', icon: '⚡' },
   { value: 'accounts', label: 'Gestion comptes', icon: '💰' },
   { value: 'trades', label: 'Trades', icon: '📊' },
   { value: 'journal', label: 'Journal', icon: '📝' },
   { value: 'stats', label: 'Statistiques', icon: '📈' },
+  { value: 'ai_assistant', label: 'Assistant IA', icon: '🤖' },
   { value: 'settings', label: 'Paramètres', icon: '⚙️' },
   { value: 'issues', label: 'Problèmes', icon: '🆘' },
   { value: 'tips', label: 'Conseils', icon: '💡' },

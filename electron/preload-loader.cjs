@@ -21,6 +21,19 @@ try {
   });
 
   const api = {
+    // Window Controls
+    windowControls: {
+      minimize: () => ipcRenderer.invoke('window:minimize'),
+      maximize: () => ipcRenderer.invoke('window:maximize'),
+      close: () => ipcRenderer.invoke('window:close'),
+      isMaximized: () => ipcRenderer.invoke('window:isMaximized'),
+      onMaximizeChange: (callback) => {
+        const listener = (_, isMaximized) => callback(isMaximized);
+        ipcRenderer.on('window:maximize-change', listener);
+        return () => ipcRenderer.removeListener('window:maximize-change', listener);
+      },
+    },
+
     // File System — kept for CSV export and image selection
     fs: {
       selectImage: () => {
@@ -35,7 +48,9 @@ try {
 
     // Deep link callback — receive Supabase auth redirect URLs
     onDeepLink: (callback) => {
-      ipcRenderer.on('deep-link', (_, url) => callback(url));
+      const listener = (_, url) => callback(url);
+      ipcRenderer.on('deep-link', listener);
+      return () => ipcRenderer.removeListener('deep-link', listener);
     },
 
     // MT Auto-Import — register callbacks (single global listener)
