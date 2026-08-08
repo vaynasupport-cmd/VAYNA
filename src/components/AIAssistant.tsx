@@ -35,7 +35,7 @@ const getInitialMessage = (): Message => ({
   content: 'Bonjour ! Je suis l\'assistant IA de **VAYNA**. Comment puis-je vous aider avec votre trading aujourd\'hui ?'
 })
 
-export function AIAssistant() {
+export function AIAssistant({ isLandingPage = false }: { isLandingPage?: boolean }) {
   const [isOpen, setIsOpen] = useState(false)
   const [showHistory, setShowHistory] = useState(false)
   
@@ -61,8 +61,9 @@ export function AIAssistant() {
   const trades = useStore(s => s.trades)
   const selectedAccountId = useStore(s => s.selectedAccountId)
   const { createTrade, deleteAllTrades } = useDatabase()
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY
-
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+  
   // Save sessions to localStorage
   useEffect(() => {
     localStorage.setItem('vayna_ai_sessions', JSON.stringify(sessions))
@@ -117,6 +118,25 @@ export function AIAssistant() {
   }
 
   const generateSystemContext = () => {
+    if (isLandingPage) {
+      return `Tu es l'Agent IA Fintech de VAYNA (Vayna Bot). Ton rôle est d'agir comme un guide, un conseiller expert en trading, et un ambassadeur de VAYNA pour les visiteurs du site.
+
+RÈGLES STRICTES ET IMPÉRATIVES (SCOPE) :
+1. Tu dois répondre aux questions concernant le trading en général, et surtout expliquer comment VAYNA peut aider les traders à devenir rentables.
+2. Tu connais parfaitement les fonctionnalités de VAYNA : 
+   - Synchronisation 100% automatique avec MetaTrader 5 (MT5).
+   - Analytique de niveau Hedge Fund (Winrate, Profit Factor, Equity curve temps réel, heatmap).
+   - Gestion multi-comptes (Prop firms comme FTMO, Topstep, ou comptes personnels).
+   - Journal de psychologie (Psychology Tracker) pour noter son edge mental.
+3. **TON BUT PRINCIPAL** : Inciter poliment et avec expertise le visiteur à s'inscrire gratuitement. Montre-lui la valeur de l'outil.
+4. Tu peux utiliser des liens Markdown pour le rediriger vers l'inscription : "[Créer un compte gratuit](/register)".
+5. Garde un ton professionnel, encourageant, expert, et très moderne (façon Stripe/Revolut).
+6. Si la question est hors-sujet (cuisine, politique, etc.), recentre poliment sur le trading et VAYNA.
+7. Ne donne pas de conseils financiers directs.
+
+Le visiteur te parle maintenant :`
+    }
+
     const totalTrades = trades.length
     const winningTrades = trades.filter(t => t.result === 'GAIN').length
     const winrate = totalTrades > 0 ? Math.round((winningTrades / totalTrades) * 100) : 0
@@ -226,13 +246,13 @@ L'utilisateur te parle maintenant :`
     
     updateSessionMessages(currentSessionId, newMessages, newTitle)
 
-    if (!apiKey) {
+    if (!supabaseUrl || !supabaseAnonKey) {
       updateSessionMessages(currentSessionId, [
         ...newMessages,
         {
           id: Date.now().toString(),
           role: 'assistant',
-          content: '⚠️ **Clé API manquante.** Pour m\'utiliser, veuillez ajouter `VITE_GEMINI_API_KEY=votre_cle` dans le fichier `.env` à la racine de votre projet.'
+          content: '⚠️ **Erreur de configuration.** Impossible de contacter le serveur sécurisé (Supabase URL ou Anon Key manquant).'
         }
       ])
       return
@@ -293,9 +313,12 @@ L'utilisateur te parle maintenant :`
         ]
       }]
 
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:streamGenerateContent?alt=sse&key=${apiKey}`, {
+      const response = await fetch(`${supabaseUrl}/functions/v1/chat`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${supabaseAnonKey}`
+        },
         body: JSON.stringify({ contents, tools })
       })
 
@@ -524,7 +547,7 @@ L'utilisateur te parle maintenant :`
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95, transition: { duration: 0.2 } }}
-            className="fixed bottom-6 right-6 z-50 w-[380px] h-[560px] max-h-[85vh] flex flex-col bg-card/95 backdrop-blur-3xl border-2 border-violet-500/20 dark:border-violet-500/50 rounded-2xl shadow-2xl dark:shadow-[0_0_40px_-10px_rgba(139,92,246,0.3)] overflow-hidden"
+            className="fixed bottom-6 right-6 sm:right-6 left-6 sm:left-auto z-50 sm:w-[380px] h-[560px] max-h-[85vh] flex flex-col bg-card/95 backdrop-blur-3xl border-2 border-violet-500/20 dark:border-violet-500/50 rounded-2xl shadow-2xl dark:shadow-[0_0_40px_-10px_rgba(139,92,246,0.3)] overflow-hidden"
           >
             {/* Header */}
             <div className="p-3 flex items-center justify-between border-b border-border/50 bg-background/50">
@@ -635,7 +658,7 @@ L'utilisateur te parle maintenant :`
 
               {/* Chat View */}
               <div className="absolute inset-0 flex flex-col h-full">
-                {!apiKey && (
+                {(!supabaseUrl || !supabaseAnonKey) && (
                   <div className="bg-amber-500/10 border-b border-amber-500/20 p-3 flex items-start gap-2 text-amber-600 dark:text-amber-400">
                     <AlertCircle size={16} className="mt-0.5 shrink-0" />
                     <p className="text-[11px] leading-relaxed">

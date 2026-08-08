@@ -13,6 +13,7 @@ import {
 import { VaynaLogo } from '@/components/VaynaLogo'
 import { useAuth } from '@/hooks/useAuth'
 import { FeaturesStack } from '@/components/FeaturesStack'
+import { AIAssistant } from '@/components/AIAssistant'
 
 /* ═══════════════════════════════════════════════════════════════════════
    ANIMATION PRESETS
@@ -398,6 +399,9 @@ export function LandingPage() {
           </div>
         </div>
       </footer>
+
+      {/* ── AI ASSISTANT ── */}
+      <AIAssistant isLandingPage />
     </div>
   )
 }
