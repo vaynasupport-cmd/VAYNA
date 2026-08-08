@@ -529,7 +529,10 @@ L'utilisateur te parle maintenant :`
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 p-3.5 rounded-full bg-gradient-to-br from-violet-600 to-blue-600 text-white shadow-2xl shadow-violet-500/30 flex items-center justify-center group overflow-hidden border border-white/10"
+            className={cn(
+              "fixed right-6 z-50 p-3.5 rounded-full bg-gradient-to-br from-violet-600 to-blue-600 text-white shadow-2xl shadow-violet-500/30 flex items-center justify-center group overflow-hidden border border-white/10",
+              isLandingPage ? "bottom-6" : "bottom-24 md:bottom-6"
+            )}
           >
             <div className="absolute inset-0 bg-white/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <MessageCircle size={22} className="relative z-10 fill-white/20 stroke-[1.5]" />
@@ -547,7 +550,10 @@ L'utilisateur te parle maintenant :`
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95, transition: { duration: 0.2 } }}
-            className="fixed bottom-6 right-6 sm:right-6 left-6 sm:left-auto z-50 sm:w-[380px] h-[560px] max-h-[85vh] flex flex-col bg-card/95 backdrop-blur-3xl border-2 border-violet-500/20 dark:border-violet-500/50 rounded-2xl shadow-2xl dark:shadow-[0_0_40px_-10px_rgba(139,92,246,0.3)] overflow-hidden"
+            className={cn(
+              "fixed right-6 sm:right-6 left-6 sm:left-auto z-50 sm:w-[380px] h-[560px] max-h-[85vh] flex flex-col bg-card/95 backdrop-blur-3xl border-2 border-violet-500/20 dark:border-violet-500/50 rounded-2xl shadow-2xl dark:shadow-[0_0_40px_-10px_rgba(139,92,246,0.3)] overflow-hidden",
+              isLandingPage ? "bottom-6" : "bottom-24 md:bottom-6"
+            )}
           >
             {/* Header */}
             <div className="p-3 flex items-center justify-between border-b border-border/50 bg-background/50">

@@ -49,9 +49,7 @@ export function Layout() {
       </motion.main>
       
       {/* AI Chatbot Widget globally available in the app */}
-      <div className="hidden md:block">
-        <AIAssistant />
-      </div>
+      <AIAssistant />
 
       <MobileBottomNav />
     </div>
