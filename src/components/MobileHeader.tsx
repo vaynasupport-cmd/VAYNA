@@ -15,8 +15,10 @@ export function MobileHeader() {
   const [showMenu, setShowMenu] = useState(false)
 
   const handleLogout = async () => {
-    await signOut()
-    navigate('/')
+    if (window.confirm("Êtes-vous sûr de vouloir vous déconnecter ?")) {
+      await signOut()
+      navigate('/')
+    }
   }
 
   // Get user initials for avatar

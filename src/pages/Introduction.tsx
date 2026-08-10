@@ -563,8 +563,10 @@ const Introduction = () => {
   // loadAllData is handled globally by Layout.tsx
 
   const handleSignOut = async () => {
-    await signOut();
-    navigate('/');
+    if (window.confirm("Êtes-vous sûr de vouloir vous déconnecter ?")) {
+      await signOut();
+      navigate('/');
+    }
   };
   const [currentTime, setCurrentTime] = useState(new Date());
   const [showContent, setShowContent] = useState(false);

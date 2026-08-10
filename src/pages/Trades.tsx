@@ -475,56 +475,68 @@ export function Trades() {
   const paginatedTrades = filteredTrades.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
 
   const handleCreate = async () => {
-    const dateOnly = formData.date.split('T')[0] || formData.date
-    const trade = await createTrade({
-      ...formData,
-      date: dateOnly,
-      createdDateTime: formData.date,
-      entryPrice: formData.entryPrice ? Number(formData.entryPrice) : undefined,
-      exitPrice: formData.exitPrice ? Number(formData.exitPrice) : undefined,
-      stopLoss: formData.stopLoss ? Number(formData.stopLoss) : undefined,
-      takeProfit: formData.takeProfit ? Number(formData.takeProfit) : undefined,
-      pnlAmount: Number(formData.pnlAmount),
-      rMultiple: calculatedRMultiple ? Number(calculatedRMultiple) : undefined
-    })
+    try {
+      const dateOnly = formData.date.split('T')[0] || formData.date
+      const trade = await createTrade({
+        ...formData,
+        date: dateOnly,
+        createdDateTime: formData.date,
+        entryPrice: formData.entryPrice ? Number(formData.entryPrice) : undefined,
+        exitPrice: formData.exitPrice ? Number(formData.exitPrice) : undefined,
+        stopLoss: formData.stopLoss ? Number(formData.stopLoss) : undefined,
+        takeProfit: formData.takeProfit ? Number(formData.takeProfit) : undefined,
+        pnlAmount: Number(formData.pnlAmount),
+        rMultiple: calculatedRMultiple ? Number(calculatedRMultiple) : undefined
+      })
 
-    if (trade && formScreenshots.length > 0) {
-      for (const img of formScreenshots) {
-        await saveScreenshot(trade.id, img.data)
+      if (trade && formScreenshots.length > 0) {
+        for (const img of formScreenshots) {
+          await saveScreenshot(trade.id, img.data)
+        }
       }
-    }
 
-    setShowAddDialog(false)
-    resetForm()
-    triggerRefresh()
+      setShowAddDialog(false)
+      resetForm()
+      triggerRefresh()
+      toast({ title: 'Succès', description: 'Le trade a été enregistré.' })
+    } catch (error: any) {
+      console.error(error)
+      toast({ title: 'Erreur', description: error.message || 'Impossible d\'enregistrer le trade.', variant: 'destructive' })
+    }
   }
 
   const handleUpdate = async () => {
     if (!editingTrade) return
-    const dateOnly = formData.date.split('T')[0] || formData.date
-    await updateTrade(editingTrade.id, {
-      ...formData,
-      date: dateOnly,
-      createdDateTime: formData.date,
-      entryPrice: formData.entryPrice ? Number(formData.entryPrice) : undefined,
-      exitPrice: formData.exitPrice ? Number(formData.exitPrice) : undefined,
-      stopLoss: formData.stopLoss ? Number(formData.stopLoss) : undefined,
-      takeProfit: formData.takeProfit ? Number(formData.takeProfit) : undefined,
-      pnlAmount: Number(formData.pnlAmount),
-      rMultiple: calculatedRMultiple ? Number(calculatedRMultiple) : undefined
-    })
+    try {
+      const dateOnly = formData.date.split('T')[0] || formData.date
+      await updateTrade(editingTrade.id, {
+        ...formData,
+        date: dateOnly,
+        createdDateTime: formData.date,
+        entryPrice: formData.entryPrice ? Number(formData.entryPrice) : undefined,
+        exitPrice: formData.exitPrice ? Number(formData.exitPrice) : undefined,
+        stopLoss: formData.stopLoss ? Number(formData.stopLoss) : undefined,
+        takeProfit: formData.takeProfit ? Number(formData.takeProfit) : undefined,
+        pnlAmount: Number(formData.pnlAmount),
+        rMultiple: calculatedRMultiple ? Number(calculatedRMultiple) : undefined
+      })
 
-    if (formScreenshots.length > 0) {
-      for (const img of formScreenshots) {
-        if (!img.id) {
-          await saveScreenshot(editingTrade.id, img.data)
+      if (formScreenshots.length > 0) {
+        for (const img of formScreenshots) {
+          if (!img.id) {
+            await saveScreenshot(editingTrade.id, img.data)
+          }
         }
       }
-    }
 
-    setEditingTrade(null)
-    resetForm()
-    triggerRefresh()
+      setEditingTrade(null)
+      resetForm()
+      triggerRefresh()
+      toast({ title: 'Succès', description: 'Le trade a été mis à jour.' })
+    } catch (error: any) {
+      console.error(error)
+      toast({ title: 'Erreur', description: error.message || 'Impossible de mettre à jour le trade.', variant: 'destructive' })
+    }
   }
 
   const handleDelete = async () => {
@@ -1089,7 +1101,7 @@ export function Trades() {
         }}
       >
         <DialogContent
-          className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto"
+          className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto pb-32 md:pb-6"
           onInteractOutside={(e) => {
             if (lightboxImage) {
               e.preventDefault();
