@@ -13,7 +13,6 @@ import {
 import { AlertTriangle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '@/components/ui/use-toast';
 
 interface LogoutConfirmationModalProps {
   children: React.ReactNode;
@@ -22,7 +21,6 @@ interface LogoutConfirmationModalProps {
 export function LogoutConfirmationModal({ children }: LogoutConfirmationModalProps) {
   const { signOut } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
   const [open, setOpen] = useState(false);
 
   const handleSignOut = async () => {
@@ -30,11 +28,7 @@ export function LogoutConfirmationModal({ children }: LogoutConfirmationModalPro
       await signOut();
       navigate('/');
     } catch (error: any) {
-      toast({
-        title: "Erreur de déconnexion",
-        description: error.message,
-        variant: "destructive",
-      });
+      console.error("Erreur de déconnexion", error);
     }
   };
 

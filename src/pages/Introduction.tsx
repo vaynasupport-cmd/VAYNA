@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, TrendingUp, BarChart3, DollarSign, Activity, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/hooks/useStore';
-import { useAuth } from '@/hooks/useAuth';
 import { VaynaLogo } from '@/components/VaynaLogo';
 import { LogoutConfirmationModal } from '@/components/LogoutConfirmationModal';
 
@@ -559,7 +558,6 @@ const LiveTicker = () => {
 const Introduction = () => {
   const navigate = useNavigate();
   const trades = useStore(s => s.trades);
-  const { signOut } = useAuth();
 
   // loadAllData is handled globally by Layout.tsx
 
