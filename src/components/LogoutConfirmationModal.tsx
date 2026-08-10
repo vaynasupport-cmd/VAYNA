@@ -25,8 +25,15 @@ export function LogoutConfirmationModal({ children }: LogoutConfirmationModalPro
 
   const handleSignOut = async () => {
     try {
-      await signOut();
+      // On navigue d'abord vers la page d'accueil
       navigate('/');
+      
+      // On attend un tout petit peu pour que la navigation se fasse,
+      // puis on déconnecte l'utilisateur pour éviter que ProtectedRoute 
+      // intercepte la déconnexion et redirige vers /login
+      setTimeout(async () => {
+        await signOut();
+      }, 50);
     } catch (error: any) {
       console.error("Erreur de déconnexion", error);
     }
