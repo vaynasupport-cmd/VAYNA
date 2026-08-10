@@ -1,5 +1,4 @@
-import { NavLink, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   LayoutDashboard,
@@ -10,7 +9,6 @@ import {
   Settings,
   ChevronRight,
   LogOut,
-  AlertTriangle,
   Sun,
   Moon
 } from 'lucide-react'
@@ -19,6 +17,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { useStore } from '@/hooks/useStore'
 import { VaynaLogo } from '@/components/VaynaLogo'
 import { cn } from '@/lib/utils'
+import { LogoutConfirmationModal } from '@/components/LogoutConfirmationModal'
 
 type MenuItem = {
   path: string
@@ -39,15 +38,8 @@ const menuItems: MenuItem[] = [
 export function Sidebar() {
   const sidebarCollapsed = useStore(s => s.sidebarCollapsed)
   const setSidebarCollapsed = useStore(s => s.setSidebarCollapsed)
-  const { user, signOut } = useAuth()
+  const { user } = useAuth()
   const { theme, setTheme } = useTheme()
-  const navigate = useNavigate()
-  const [showLogoutModal, setShowLogoutModal] = useState(false)
-
-  const handleConfirmLogout = async () => {
-    await signOut()
-    navigate('/')
-  }
 
   const isElectron = navigator.userAgent.toLowerCase().includes('electron')
 
@@ -304,75 +296,27 @@ export function Sidebar() {
           </AnimatePresence>
         </NavLink>
 
-        <button
-          onClick={() => setShowLogoutModal(true)}
-          className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-red-500 hover:bg-red-500/10 transition-all duration-200 mt-1"
-        >
-          <LogOut className="h-5 w-5 flex-shrink-0" />
-          <AnimatePresence>
-            {!sidebarCollapsed && (
-              <motion.span
-                initial={{ opacity: 0, width: 0 }}
-                animate={{ opacity: 1, width: 'auto' }}
-                exit={{ opacity: 0, width: 0 }}
-                className="whitespace-nowrap overflow-hidden text-left"
-              >
-                Déconnexion
-              </motion.span>
-            )}
-          </AnimatePresence>
-        </button>
+        <LogoutConfirmationModal>
+          <button
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-red-500 hover:bg-red-500/10 transition-all duration-200 mt-1"
+          >
+            <LogOut className="h-5 w-5 flex-shrink-0" />
+            <AnimatePresence>
+              {!sidebarCollapsed && (
+                <motion.span
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: 'auto' }}
+                  exit={{ opacity: 0, width: 0 }}
+                  className="whitespace-nowrap overflow-hidden text-left"
+                >
+                  Déconnexion
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </button>
+        </LogoutConfirmationModal>
       </div>
     </motion.aside>
-
-    {/* ─── Logout Confirmation Modal ─── */}
-    <AnimatePresence>
-      {showLogoutModal && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center"
-        >
-          {/* Backdrop */}
-          <motion.div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            onClick={() => setShowLogoutModal(false)}
-          />
-
-          {/* Dialog */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 10 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="relative z-10 w-full max-w-sm mx-4 bg-card border border-border rounded-2xl p-6 shadow-2xl"
-          >
-            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-500/10 border border-red-500/20 mx-auto mb-4">
-              <AlertTriangle className="h-6 w-6 text-red-500" />
-            </div>
-            <h2 className="text-lg font-semibold text-center mb-2">Mettre fin à la session ?</h2>
-            <p className="text-sm text-muted-foreground text-center mb-6">
-              Vous allez être déconnecté de votre espace VAYNA. Vos données sont sauvegardées et vous pourrez vous reconnecter à tout moment.
-            </p>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setShowLogoutModal(false)}
-                className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium border border-border hover:bg-accent transition-colors"
-              >
-                Annuler
-              </button>
-              <button
-                onClick={handleConfirmLogout}
-                className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium bg-red-600 hover:bg-red-700 text-white transition-colors"
-              >
-                Se déconnecter
-              </button>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
     </>
   )
 }

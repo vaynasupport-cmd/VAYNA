@@ -1,25 +1,17 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Sun, Moon, LogOut } from 'lucide-react'
 import { useTheme } from '@/components/ThemeProvider'
 import { useAuth } from '@/hooks/useAuth'
 import { VaynaLogo } from '@/components/VaynaLogo'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import { LogoutConfirmationModal } from '@/components/LogoutConfirmationModal'
 
 export function MobileHeader() {
   const { theme, setTheme } = useTheme()
-  const { user, signOut } = useAuth()
-  const navigate = useNavigate()
+  const { user } = useAuth()
   const isDark = theme === 'dark'
   const [showMenu, setShowMenu] = useState(false)
-
-  const handleLogout = async () => {
-    if (window.confirm("Êtes-vous sûr de vouloir vous déconnecter ?")) {
-      await signOut()
-      navigate('/')
-    }
-  }
 
   // Get user initials for avatar
   const initials = user?.email
@@ -118,13 +110,14 @@ export function MobileHeader() {
                     <div className="px-3 py-2.5 border-b border-border/40">
                       <p className="text-xs font-medium truncate">{user?.email}</p>
                     </div>
-                    <button
-                      onClick={handleLogout}
-                      className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-destructive hover:bg-destructive/10 transition-colors"
-                    >
-                      <LogOut className="h-3.5 w-3.5" />
-                      Déconnexion
-                    </button>
+                    <LogoutConfirmationModal>
+                      <button
+                        className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-destructive hover:bg-destructive/10 transition-colors"
+                      >
+                        <LogOut className="h-3.5 w-3.5" />
+                        Déconnexion
+                      </button>
+                    </LogoutConfirmationModal>
                   </motion.div>
                 </>
               )}

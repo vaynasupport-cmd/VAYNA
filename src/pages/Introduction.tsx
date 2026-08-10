@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/hooks/useStore';
 import { useAuth } from '@/hooks/useAuth';
 import { VaynaLogo } from '@/components/VaynaLogo';
+import { LogoutConfirmationModal } from '@/components/LogoutConfirmationModal';
 
 /* ═══════════════════════════════════════════════
    ANIMATED COUNTER — count from 0 to target
@@ -740,28 +741,29 @@ const Introduction = () => {
           </div>
 
           {/* Clock + Sign out */}
-          <div className="flex items-center gap-4">
-            <motion.div
-              className="hidden sm:block text-sm font-mono text-slate-400 font-medium tabular-nums tracking-wide"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.8 }}
-              transition={{ delay: 0.9 }}
-            >
-              {formatTime(currentTime)}
-            </motion.div>
-            <motion.button
-              onClick={handleSignOut}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-slate-500 hover:text-red-400 border border-slate-800 hover:border-red-900/60 transition-all duration-200"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.7 }}
-              transition={{ delay: 1.2 }}
-              title="Se déconnecter"
-            >
-              <LogOut size={12} />
-              Déconnexion
-            </motion.button>
-          </div>
-        </motion.header>
+            <div className="flex items-center gap-4">
+              <motion.div
+                className="hidden sm:block text-sm font-mono text-slate-400 font-medium tabular-nums tracking-wide"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.8 }}
+                transition={{ delay: 0.9 }}
+              >
+                {formatTime(currentTime)}
+              </motion.div>
+              <LogoutConfirmationModal>
+                <motion.button
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-slate-500 hover:text-red-400 border border-slate-800 hover:border-red-900/60 transition-all duration-200"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.7 }}
+                  transition={{ delay: 1.2 }}
+                  title="Se déconnecter"
+                >
+                  <LogOut size={12} />
+                  Déconnexion
+                </motion.button>
+              </LogoutConfirmationModal>
+            </div>
+          </motion.header>
 
         {/* ══════════════════════════════════════════
             MAIN CONTENT — 2 columns
