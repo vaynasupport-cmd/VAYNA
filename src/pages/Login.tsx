@@ -114,7 +114,7 @@ export function Login() {
               </div>
               <div>
                 <h2 style={{ color: '#fff', fontSize: '22px', fontWeight: 'bold', marginBottom: '8px' }}>
-                  {authLoading && !loginSuccess ? 'Vérification...' : (isRegisterCallback ? 'Inscription réussie' : 'Connexion réussie')}
+                  {authLoading && !loginSuccess ? 'Vérification...' : 'Connexion réussie'}
                 </h2>
                 <p style={{ color: 'rgba(240, 244, 255, 0.5)', fontSize: '15px' }}>Préparation de votre espace...</p>
               </div>
