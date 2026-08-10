@@ -727,7 +727,7 @@ const Introduction = () => {
             HEADER
             ══════════════════════════════════════════ */}
         <motion.header
-          className="relative z-10 flex items-center justify-between px-8 py-4"
+          className="relative z-10 flex items-center justify-between px-4 md:px-8 py-4"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
@@ -740,7 +740,7 @@ const Introduction = () => {
           {/* Clock + Sign out */}
           <div className="flex items-center gap-4">
             <motion.div
-              className="text-sm font-mono text-slate-400 font-medium tabular-nums tracking-wide"
+              className="hidden sm:block text-sm font-mono text-slate-400 font-medium tabular-nums tracking-wide"
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.8 }}
               transition={{ delay: 0.9 }}
