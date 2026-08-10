@@ -104,7 +104,7 @@ const FloatingParticles = () => {
 const Floating3DCurve = () => {
   return (
     <motion.div 
-      className="absolute top-[-280px] left-[-20%] w-[140%] h-[350px] pointer-events-none mix-blend-screen z-0"
+      className="hidden md:block absolute top-[-280px] left-[-20%] w-[140%] h-[350px] pointer-events-none mix-blend-screen z-0"
       initial={{ opacity: 0 }}
       animate={{ opacity: 0.65 }}
       transition={{ duration: 2, delay: 1 }}
@@ -284,14 +284,6 @@ const MiniPriceChart = ({ points }: { points: number[] }) => {
           <stop offset="50%" stopColor="#22d3ee" />
           <stop offset="100%" stopColor="#06b6d4" />
         </linearGradient>
-        {/* Glow filter */}
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-          <feMerge>
-            <feMergeNode in="coloredBlur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
       </defs>
 
       {/* Horizontal grid lines */}
@@ -324,8 +316,8 @@ const MiniPriceChart = ({ points }: { points: number[] }) => {
         strokeWidth="6"
         strokeLinecap="round"
         strokeLinejoin="round"
-        opacity="0.15"
-        filter="url(#glow)"
+        opacity="0.25"
+        className="drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]"
         initial={{ strokeDasharray: pathLength, strokeDashoffset: pathLength }}
         animate={{ strokeDashoffset: 0 }}
         transition={{ duration: 2.5, delay: 0.5, ease: 'easeInOut' }}
@@ -355,7 +347,7 @@ const MiniPriceChart = ({ points }: { points: number[] }) => {
         }
         r="5"
         fill="#22d3ee"
-        filter="url(#glow)"
+        className="drop-shadow-[0_0_6px_rgba(34,211,238,1)]"
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: [0, 1, 0.7, 1], scale: 1 }}
         transition={{ duration: 0.5, delay: 2.8 }}
@@ -773,7 +765,7 @@ const Introduction = () => {
             MAIN CONTENT — 2 columns
             ══════════════════════════════════════════ */}
         {showContent && (
-          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-[calc(100vh-72px)] px-6 lg:px-16 py-8 lg:py-0">
+          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-[calc(100vh-72px)] px-6 lg:px-16 pb-24 pt-8 lg:py-0">
             {/* ── LEFT COLUMN (45%) — Identity ── */}
             <div className="w-full lg:w-[45%] flex flex-col justify-center pr-0 lg:pr-12 mb-12 lg:mb-0">
               {/* Title */}
@@ -793,7 +785,7 @@ const Introduction = () => {
                     transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                   />
                   <motion.span
-                    className="block text-5xl md:text-7xl font-medium tracking-[0.15em] md:tracking-[0.25em] relative"
+                    className="block text-4xl sm:text-5xl md:text-7xl font-medium tracking-[0.15em] md:tracking-[0.25em] relative"
                     style={{
                       background: 'linear-gradient(135deg, #e0f2fe 0%, #93c5fd 30%, #3b82f6 70%, #1e40af 100%)',
                       WebkitBackgroundClip: 'text',
