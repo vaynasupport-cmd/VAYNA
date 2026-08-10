@@ -16,8 +16,7 @@ export function Login() {
   const [loginSuccess, setLoginSuccess] = useState(false)
   const [isLoggingIn, setIsLoggingIn] = useState(false)
   const [isGoogleCallback, setIsGoogleCallback] = useState(() => localStorage.getItem('isGoogleLogin') === 'true' || localStorage.getItem('isGoogleRegister') === 'true')
-  const [isRegisterCallback] = useState(() => localStorage.getItem('isGoogleRegister') === 'true')
-  const { signIn, signInWithGoogle, user, loading: authLoading, signOut } = useAuth()
+  const { signIn, signInWithGoogle, user, loading: authLoading } = useAuth()
   const navigate = useNavigate()
 
   const from = (location.state as any)?.from?.pathname || '/intro'
@@ -40,22 +39,15 @@ export function Login() {
         }
         setIsGoogleCallback(false)
         setLoginSuccess(true)
-        const timer = setTimeout(async () => {
-          if (isRegisterCallback) {
-             await signOut()
-             setLoginSuccess(false)
-          } else {
-             navigate(from, { replace: true })
-          }
+        const timer = setTimeout(() => {
+           navigate(from, { replace: true })
         }, 1200)
         return () => clearTimeout(timer)
       } else {
-        if (!isRegisterCallback) {
-          navigate(from, { replace: true })
-        }
+        navigate(from, { replace: true })
       }
     }
-  }, [user, authLoading, navigate, from, isLoggingIn, loginSuccess, isGoogleCallback, isRegisterCallback, signOut])
+  }, [user, authLoading, navigate, from, isLoggingIn, loginSuccess, isGoogleCallback])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
