@@ -180,14 +180,74 @@ export function LandingPage() {
 
           {/* Big VΛYNΛ Logo */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <span style={{ fontSize: 'clamp(40px, 6vw, 70px)', fontWeight: '900', letterSpacing: '0.22em', background: 'linear-gradient(135deg, #ffffff 0%, #93c5fd 40%, #3b82f6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontFamily: "'Inter', sans-serif", filter: 'drop-shadow(0 0 16px rgba(59,130,246,0.5))' }}>
-              V<span style={{ fontFamily: 'Georgia, serif' }}>Λ</span>YN<span style={{ fontFamily: 'Georgia, serif' }}>Λ</span>
-            </span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '16px' }}>
-              <div style={{ height: '1px', width: '48px', background: 'linear-gradient(to right, transparent, #06b6d4)' }} />
-              <span style={{ textTransform: 'uppercase', fontWeight: '300', whiteSpace: 'nowrap', color: 'rgba(207,250,254,0.5)', fontSize: 'clamp(10px, 1.5vw, 14px)', letterSpacing: '0.3em' }}>Journal de Trading</span>
-              <div style={{ height: '1px', width: '64px', background: 'linear-gradient(to right, rgba(71,85,105,0.6), transparent)' }} />
-            </div>
+            <motion.div 
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } }
+              }}
+              style={{ display: 'flex', justifyContent: 'center', filter: 'drop-shadow(0 0 24px rgba(59,130,246,0.6))' }}
+            >
+              {[
+                { char: 'V', font: "'Inter', sans-serif" },
+                { char: 'Λ', font: "Georgia, serif" },
+                { char: 'Y', font: "'Inter', sans-serif" },
+                { char: 'N', font: "'Inter', sans-serif" },
+                { char: 'Λ', font: "Georgia, serif", noLetterSpacing: true },
+              ].map((item, i) => (
+                <motion.span
+                  key={i}
+                  variants={{
+                    hidden: { opacity: 0, y: 50, rotateX: -60, filter: 'blur(15px)', scale: 0.6 },
+                    visible: { 
+                      opacity: 1, 
+                      y: 0, 
+                      rotateX: 0,
+                      filter: 'blur(0px)', 
+                      scale: 1,
+                      transition: { type: 'spring', damping: 12, stiffness: 150 } 
+                    }
+                  }}
+                  style={{ 
+                    fontSize: 'clamp(40px, 6vw, 70px)', 
+                    fontWeight: '900', 
+                    letterSpacing: item.noLetterSpacing ? '0' : '0.22em', 
+                    fontFamily: item.font,
+                    background: 'linear-gradient(135deg, #ffffff 0%, #93c5fd 40%, #3b82f6 100%)', 
+                    WebkitBackgroundClip: 'text', 
+                    WebkitTextFillColor: 'transparent',
+                    display: 'inline-block'
+                  }}
+                >
+                  {item.char}
+                </motion.span>
+              ))}
+            </motion.div>
+            <motion.div 
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: { transition: { staggerChildren: 0.2, delayChildren: 1.0 } }
+              }}
+              style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '16px' }}
+            >
+              <motion.div 
+                variants={{ hidden: { opacity: 0, scaleX: 0 }, visible: { opacity: 1, scaleX: 1, transition: { duration: 0.8, ease: "easeOut" } } }}
+                style={{ height: '1px', width: '48px', background: 'linear-gradient(to right, transparent, #06b6d4)', transformOrigin: 'right' }} 
+              />
+              <motion.span 
+                variants={{ hidden: { opacity: 0, y: 10, filter: 'blur(4px)' }, visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.8, ease: "easeOut" } } }}
+                style={{ textTransform: 'uppercase', fontWeight: '300', whiteSpace: 'nowrap', color: 'rgba(207,250,254,0.5)', fontSize: 'clamp(10px, 1.5vw, 14px)', letterSpacing: '0.3em' }}
+              >
+                Journal de Trading
+              </motion.span>
+              <motion.div 
+                variants={{ hidden: { opacity: 0, scaleX: 0 }, visible: { opacity: 1, scaleX: 1, transition: { duration: 0.8, ease: "easeOut" } } }}
+                style={{ height: '1px', width: '64px', background: 'linear-gradient(to right, rgba(71,85,105,0.6), transparent)', transformOrigin: 'left' }} 
+              />
+            </motion.div>
           </div>
 
           {/* Equity Curve Chart Card */}
