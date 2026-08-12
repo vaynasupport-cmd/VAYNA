@@ -59,7 +59,9 @@ function createWindow() {
       contextIsolation: true,
       preload: preloadPath,
     },
-    icon: path.join(__dirname, '../build/icon.ico'),
+    icon: (app.isPackaged && process.platform === 'win32')
+      ? undefined
+      : path.join(__dirname, '../build/icon.ico'),
   })
 
   if (isDev) {
