@@ -117,7 +117,6 @@ export function Register() {
   return (
     <div className="auth-page">
       <div className="auth-bg">
-        <div className="auth-grid" />
         <div className="auth-glow auth-glow-1" />
         <div className="auth-glow auth-glow-2" />
       </div>

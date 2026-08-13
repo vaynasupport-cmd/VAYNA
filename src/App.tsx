@@ -72,6 +72,10 @@ function GlobalLoader() {
 }
 
 import { Capacitor } from '@capacitor/core'
+import { useAuth } from '@/hooks/useAuth'
+import { SplashScreen } from '@/components/SplashScreen'
+import { AnimatePresence } from 'framer-motion'
+import { useState, useEffect as useReactEffect } from 'react'
 
 /**
  * Inner component that runs the auto-import hook
@@ -79,69 +83,86 @@ import { Capacitor } from '@capacitor/core'
 function AppContent() {
   const isElectron = navigator.userAgent.toLowerCase().includes('electron')
   const isNativeApp = isElectron || Capacitor.isNativePlatform()
+  
+  const { loading: authLoading } = useAuth()
+  const [minTimeElapsed, setMinTimeElapsed] = useState(false)
+
+  useReactEffect(() => {
+    // Garantie un temps d'affichage minimum du splash screen pour jouer l'animation (4.0s)
+    const timer = setTimeout(() => setMinTimeElapsed(true), 4000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  const showSplash = !minTimeElapsed || authLoading
 
   return (
-    <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      {isElectron && <TitleBar />}
-      <div className={isElectron ? "pt-10" : ""}>
-        <GlobalLoader />
-        <ScrollToTop />
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            {/* ─── PUBLIC ROUTES ─────────────────────────── */}
-            <Route path="/" element={isNativeApp ? <Navigate to="/login" replace /> : <LandingPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            
-            {/* Pages marketing uniquement sur le web */}
-            {!isNativeApp && (
-              <>
-                <Route path="/faq" element={<FAQPage />} />
-                <Route path="/features" element={<FeaturesPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/download" element={<DownloadPage />} />
-              </>
-            )}
+    <>
+      <AnimatePresence>
+        {showSplash && <SplashScreen />}
+      </AnimatePresence>
 
-            {/* ─── PROTECTED: Introduction (splash) ──────── */}
-            <Route
-              path="/intro"
-              element={
-                <ProtectedRoute>
-                  <Introduction />
-                </ProtectedRoute>
-              }
-            />
+      <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        {isElectron && <TitleBar />}
+        <div className={isElectron ? "pt-10" : ""}>
+          <GlobalLoader />
+          <ScrollToTop />
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              {/* ─── PUBLIC ROUTES ─────────────────────────── */}
+              <Route path="/" element={isNativeApp ? <Navigate to="/login" replace /> : <LandingPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              
+              {/* Pages marketing uniquement sur le web */}
+              {!isNativeApp && (
+                <>
+                  <Route path="/faq" element={<FAQPage />} />
+                  <Route path="/features" element={<FeaturesPage />} />
+                  <Route path="/contact" element={<ContactPage />} />
+                  <Route path="/download" element={<DownloadPage />} />
+                </>
+              )}
 
-            {/* ─── PROTECTED: App with Sidebar Layout ────── */}
-            <Route
-              path="/app"
-              element={
-                <ProtectedRoute>
-                  <Layout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<Navigate to="dashboard" replace />} />
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="accounts" element={<Accounts />} />
-              <Route path="trades" element={<Trades />} />
-              <Route path="statistics" element={<Statistics />} />
-              <Route path="journal" element={<Journal />} />
-              <Route path="mt5-sync" element={<MT5Sync />} />
-              <Route path="settings" element={<Settings />} />
-              <Route path="faq" element={<FAQ />} />
-            </Route>
+              {/* ─── PROTECTED: Introduction (splash) ──────── */}
+              <Route
+                path="/intro"
+                element={
+                  <ProtectedRoute>
+                    <Introduction />
+                  </ProtectedRoute>
+                }
+              />
 
-            {/* ─── CATCH ALL ─────────────────────────────── */}
-            <Route path="*" element={<Navigate to={isElectron ? "/login" : "/"} replace />} />
-          </Routes>
-        </Suspense>
-        <Toaster />
-      </div>
-    </HashRouter>
+              {/* ─── PROTECTED: App with Sidebar Layout ────── */}
+              <Route
+                path="/app"
+                element={
+                  <ProtectedRoute>
+                    <Layout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index element={<Navigate to="dashboard" replace />} />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="accounts" element={<Accounts />} />
+                <Route path="trades" element={<Trades />} />
+                <Route path="statistics" element={<Statistics />} />
+                <Route path="journal" element={<Journal />} />
+                <Route path="mt5-sync" element={<MT5Sync />} />
+                <Route path="settings" element={<Settings />} />
+                <Route path="faq" element={<FAQ />} />
+              </Route>
+
+              {/* ─── CATCH ALL ─────────────────────────────── */}
+              <Route path="*" element={<Navigate to={isElectron ? "/login" : "/"} replace />} />
+            </Routes>
+          </Suspense>
+          <Toaster />
+        </div>
+      </HashRouter>
+    </>
   )
 }
 
