@@ -28,7 +28,13 @@ export function Login() {
       localStorage.removeItem('isGoogleLogin')
       localStorage.removeItem('isGoogleRegister')
       setIsGoogleCallback(false)
-      setError("Erreur lors de l'opération avec Google ou opération annulée.")
+      
+      const hash = window.location.hash
+      const search = window.location.search
+      if (hash.includes('error') || search.includes('error')) {
+        const params = new URLSearchParams(hash.includes('?') ? hash.split('?')[1] : (hash.substring(1) || search))
+        setError(params.get('error_description') || "Erreur lors de l'opération avec Google ou opération annulée.")
+      }
     }
 
     if (user && !authLoading) {
