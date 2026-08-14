@@ -70,8 +70,8 @@ export function calculateDashboardStats(allTrades: Trade[], filters?: Filters): 
 
   // Drawdown calculation requires strict chronological order
   const sortedTrades = [...trades].sort((a, b) => {
-    const tA = a.createdDateTime || a.date
-    const tB = b.createdDateTime || b.date
+    const tA = a.createdDateTime || a.date || ''
+    const tB = b.createdDateTime || b.date || ''
     return tA.localeCompare(tB)
   })
 
@@ -149,8 +149,8 @@ export function calculateAdvancedStats(allTrades: Trade[], filters?: Filters): A
 export function calculateEquityCurve(allTrades: Trade[], initialCapital: number = 0, filters?: Filters): EquityPoint[] {
   const trades = filterTrades(allTrades, filters)
   const sorted = [...trades].sort((a, b) => {
-    const tA = a.createdDateTime || a.date
-    const tB = b.createdDateTime || b.date
+    const tA = a.createdDateTime || a.date || ''
+    const tB = b.createdDateTime || b.date || ''
     return tA.localeCompare(tB)
   })
   

@@ -78,8 +78,8 @@ export function Dashboard() {
       ? trades.filter(t => t.accountId === selectedAccountId)
       : trades
     const sorted = [...filtered].sort((a, b) => {
-      const tA = a.createdDateTime || a.date
-      const tB = b.createdDateTime || b.date
+      const tA = a.createdDateTime || a.date || ''
+      const tB = b.createdDateTime || b.date || ''
       return tA.localeCompare(tB)
     })
     return sorted.map((t, i) => ({
@@ -101,8 +101,8 @@ export function Dashboard() {
       ? trades.filter(t => t.accountId === selectedAccountId)
       : trades
     const sorted = [...filtered].sort((a, b) => {
-      const tA = a.createdDateTime || a.date
-      const tB = b.createdDateTime || b.date
+      const tA = a.createdDateTime || a.date || ''
+      const tB = b.createdDateTime || b.date || ''
       return tA.localeCompare(tB)
     })
 
