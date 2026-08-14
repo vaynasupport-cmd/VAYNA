@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  User, Shield, Camera, Save, Loader2, KeyRound, Mail, AlertCircle, Sun, Moon, Palette, Bell, Link2, CheckCircle2, Database, Trash2, Sparkles,
+  User, Shield, Camera, Save, Loader2, KeyRound, Mail, AlertCircle, Sun, Moon, Palette, Bell, Link2, CheckCircle2, Database, Trash2, Sparkles
 } from 'lucide-react'
+import { useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '@features/auth/useAuth'
 import { useStore } from '@/hooks/useStore'
 import { useToast } from '@/hooks/useToast'
@@ -16,7 +17,7 @@ export function Settings() {
   const { user, updateProfile, updatePassword, signIn } = useAuth()
   const notificationPreferences = useStore(s => s.notificationPreferences)
   const setNotificationPreferences = useStore(s => s.setNotificationPreferences)
-  const triggerRefresh = useStore(s => s.triggerRefresh)
+  const queryClient = useQueryClient()
   const { toast } = useToast()
   const { theme, setTheme } = useTheme()
 
@@ -68,7 +69,8 @@ export function Settings() {
     const result = await seedDemoData(user.id)
     if (result.success) {
       setDemoDataExists(true)
-      triggerRefresh()
+      queryClient.invalidateQueries({ queryKey: ['trades'] })
+      queryClient.invalidateQueries({ queryKey: ['accounts'] })
       toast({
         title: '🎬 Données démo injectées',
         description: '3 comptes, 461 trades et 12 entrées journal ont été créés. Prenez vos screenshots !',
@@ -89,7 +91,8 @@ export function Settings() {
     const result = await clearDemoData(user.id)
     if (result.success) {
       setDemoDataExists(false)
-      triggerRefresh()
+      queryClient.invalidateQueries({ queryKey: ['trades'] })
+      queryClient.invalidateQueries({ queryKey: ['accounts'] })
       toast({
         title: '🧹 Données démo supprimées',
         description: 'Toutes les données démo ont été nettoyées. Votre compte est propre.',

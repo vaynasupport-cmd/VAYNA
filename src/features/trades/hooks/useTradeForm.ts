@@ -1,15 +1,20 @@
 import { useState, useMemo } from 'react'
-import { useDatabase } from '@/hooks/useDatabase'
+import { useGlobalStats } from '@/hooks/useGlobalStats'
+import { useCreateTradeMutation, useUpdateTradeMutation, useUploadScreenshotMutation, useDeleteScreenshotMutation } from '@/hooks/queries/useTrades'
+import { getScreenshots } from '@/api/trades'
 import { useStore } from '@/hooks/useStore'
 import { useToast } from '@/hooks/useToast'
 import type { Trade, TradeResult } from '@/types'
 
 export function useTradeForm() {
-  const { createTrade, updateTrade, saveScreenshot, getScreenshots, deleteScreenshot } = useDatabase()
   const { toast } = useToast()
-  const accounts = useStore(s => s.accounts)
+  const { accounts } = useGlobalStats()
   const selectedAccountId = useStore(s => s.selectedAccountId)
-  const triggerRefresh = useStore(s => s.triggerRefresh)
+
+  const createTradeMutation = useCreateTradeMutation()
+  const updateTradeMutation = useUpdateTradeMutation()
+  const uploadScreenshotMutation = useUploadScreenshotMutation()
+  const deleteScreenshotMutation = useDeleteScreenshotMutation()
 
   const [showAddDialog, setShowAddDialog] = useState(false)
   const [editingTrade, setEditingTrade] = useState<Trade | null>(null)
@@ -106,7 +111,7 @@ export function useTradeForm() {
   const handleCreate = async () => {
     try {
       const dateOnly = formData.date.split('T')[0] || formData.date
-      const trade = await createTrade({
+      const trade = await createTradeMutation.mutateAsync({
         ...formData,
         date: dateOnly,
         createdDateTime: formData.date,
@@ -120,13 +125,12 @@ export function useTradeForm() {
 
       if (trade && formScreenshots.length > 0) {
         for (const img of formScreenshots) {
-          await saveScreenshot(trade.id, img.data)
+          await uploadScreenshotMutation.mutateAsync({ tradeId: trade.id, imageData: img.data })
         }
       }
 
       setShowAddDialog(false)
       resetForm()
-      triggerRefresh()
       toast({ title: 'Succès', description: 'Le trade a été enregistré.' })
     } catch (error: any) {
       console.error(error)
@@ -138,7 +142,7 @@ export function useTradeForm() {
     if (!editingTrade) return
     try {
       const dateOnly = formData.date.split('T')[0] || formData.date
-      await updateTrade(editingTrade.id, {
+      await updateTradeMutation.mutateAsync({ id: editingTrade.id, data: {
         ...formData,
         date: dateOnly,
         createdDateTime: formData.date,
@@ -148,19 +152,18 @@ export function useTradeForm() {
         takeProfit: formData.takeProfit ? Number(formData.takeProfit) : undefined,
         pnlAmount: Number(formData.pnlAmount),
         rMultiple: calculatedRMultiple ? Number(calculatedRMultiple) : undefined
-      })
+      }})
 
       if (formScreenshots.length > 0) {
         for (const img of formScreenshots) {
           if (!img.id) {
-            await saveScreenshot(editingTrade.id, img.data)
+            await uploadScreenshotMutation.mutateAsync({ tradeId: editingTrade.id, imageData: img.data })
           }
         }
       }
 
       setEditingTrade(null)
       resetForm()
-      triggerRefresh()
       toast({ title: 'Succès', description: 'Le trade a été mis à jour.' })
     } catch (error: any) {
       console.error(error)
@@ -171,7 +174,7 @@ export function useTradeForm() {
   const handleFormScreenshotDelete = async (index: number) => {
     const img = formScreenshots[index]
     if (img.id) {
-      await deleteScreenshot(img.id)
+      await deleteScreenshotMutation.mutateAsync({ id: img.id, tradeId: editingTrade?.id || '' })
     }
     setFormScreenshots(prev => prev.filter((_, i) => i !== index))
   }

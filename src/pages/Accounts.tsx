@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Edit2, Trash2, Wallet, AlertTriangle } from 'lucide-react'
-import { useStore } from '@/hooks/useStore'
-import { useDatabase } from '@/hooks/useDatabase'
+import { useGlobalStats } from '@/hooks/useGlobalStats'
+import { useCreateAccountMutation, useUpdateAccountMutation, useDeleteAccountMutation } from '@/hooks/queries/useAccounts'
 import { useToast } from '@/hooks/useToast'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -28,9 +28,10 @@ import { cn, formatCurrency, formatPercent, getStatusColor, getStatusBgColor } f
 import type { Account } from '@/types'
 
 export function Accounts() {
-  const accounts = useStore(s => s.accounts)
-  const triggerRefresh = useStore(s => s.triggerRefresh)
-  const { createAccount, updateAccount, deleteAccount } = useDatabase()
+  const { accounts } = useGlobalStats()
+  const createAccountMutation = useCreateAccountMutation()
+  const updateAccountMutation = useUpdateAccountMutation()
+  const deleteAccountMutation = useDeleteAccountMutation()
   const { toast } = useToast()
 
   const [showAddDialog, setShowAddDialog] = useState(false)
@@ -57,10 +58,9 @@ export function Accounts() {
         })
         return
       }
-      await createAccount(formData)
+      await createAccountMutation.mutateAsync(formData)
       setShowAddDialog(false)
       resetForm()
-      triggerRefresh()
       toast({
         title: 'Succès',
         description: 'Compte créé avec succès',
@@ -78,10 +78,9 @@ export function Accounts() {
   const handleUpdate = async () => {
     try {
       if (!editingAccount) return
-      await updateAccount(editingAccount.id, formData)
+      await updateAccountMutation.mutateAsync({ id: editingAccount.id, data: formData })
       setEditingAccount(null)
       resetForm()
-      triggerRefresh()
       toast({
         title: 'Succès',
         description: 'Compte mis à jour avec succès',
@@ -99,9 +98,8 @@ export function Accounts() {
   const handleDelete = async () => {
     try {
       if (!deletingAccount) return
-      await deleteAccount(deletingAccount.id)
+      await deleteAccountMutation.mutateAsync(deletingAccount.id)
       setDeletingAccount(null)
-      triggerRefresh()
       toast({
         title: 'Succès',
         description: 'Compte supprimé avec succès',

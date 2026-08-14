@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { Trash2, Plus, ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { useDatabase } from '@/hooks/useDatabase'
+import { useScreenshotsQuery, useUploadScreenshotMutation, useDeleteScreenshotMutation } from '@/hooks/queries/useTrades'
 import type { Trade } from '@/types'
 
 interface ScreenshotViewerProps {
@@ -12,9 +12,9 @@ interface ScreenshotViewerProps {
 }
 
 export function ScreenshotViewer({ trade, onClose }: ScreenshotViewerProps) {
-  const { getScreenshots, saveScreenshot, deleteScreenshot, selectImage } = useDatabase()
-  
-  const [screenshots, setScreenshots] = useState<any[]>([])
+  const { data: screenshots = [] } = useScreenshotsQuery(trade?.id || '')
+  const uploadScreenshotMutation = useUploadScreenshotMutation()
+  const deleteScreenshotMutation = useDeleteScreenshotMutation()
   const [currentScreenshotIndex, setCurrentScreenshotIndex] = useState(0)
   const [zoom, setZoom] = useState(1)
   const [pan, setPan] = useState({ x: 0, y: 0 })
@@ -30,21 +30,8 @@ export function ScreenshotViewer({ trade, onClose }: ScreenshotViewerProps) {
       setZoom(1)
       setPan({ x: 0, y: 0 })
       setCurrentScreenshotIndex(0)
-      
-      const fetchScreenshots = async () => {
-        try {
-          const tradeScreenshots = await getScreenshots(trade.id)
-          setScreenshots(tradeScreenshots)
-        } catch (err) {
-          console.log('Could not load screenshots (table may not exist)')
-          setScreenshots([])
-        }
-      }
-      fetchScreenshots()
-    } else {
-      setScreenshots([])
     }
-  }, [trade, getScreenshots])
+  }, [trade])
 
   // Reset zoom when changing images
   useEffect(() => {
@@ -87,29 +74,37 @@ export function ScreenshotViewer({ trade, onClose }: ScreenshotViewerProps) {
   }
 
   const handleImageUpload = async () => {
-    const image = await selectImage()
+    let image = null
+    try {
+      if (window.electronAPI) {
+        image = await window.electronAPI.fs.selectImage()
+      }
+    } catch (err) {
+      console.error('Error selecting image:', err)
+    }
+
     if (image && trade) {
       try {
-        await saveScreenshot(trade.id, image.data)
-        const updatedScreenshots = await getScreenshots(trade.id)
-        setScreenshots(updatedScreenshots)
+        await uploadScreenshotMutation.mutateAsync({ tradeId: trade.id, imageData: image.data })
       } catch (err) {
-        console.log('Could not update screenshots')
+        console.log('Could not update screenshots', err)
       }
     }
   }
 
   const handleDeleteScreenshot = async () => {
-    if (deletingScreenshot === null || !screenshots[deletingScreenshot]) return
+    if (deletingScreenshot === null || !screenshots[deletingScreenshot] || !trade) return
 
     try {
-      await deleteScreenshot(screenshots[deletingScreenshot].id)
-      const newScreenshots = screenshots.filter((_, i) => i !== deletingScreenshot)
-      setScreenshots(newScreenshots)
-
-      if (currentScreenshotIndex >= newScreenshots.length && newScreenshots.length > 0) {
-        setCurrentScreenshotIndex(newScreenshots.length - 1)
-      } else if (newScreenshots.length === 0) {
+      await deleteScreenshotMutation.mutateAsync({ 
+        id: screenshots[deletingScreenshot].id, 
+        tradeId: trade.id 
+      })
+      
+      const remainingCount = screenshots.length - 1
+      if (currentScreenshotIndex >= remainingCount && remainingCount > 0) {
+        setCurrentScreenshotIndex(remainingCount - 1)
+      } else if (remainingCount === 0) {
         setCurrentScreenshotIndex(0)
       }
       setDeletingScreenshot(null)

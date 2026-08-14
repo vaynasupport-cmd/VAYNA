@@ -11,6 +11,7 @@ import {
   Calendar
 } from 'lucide-react'
 import { useStore } from '@/hooks/useStore'
+import { useGlobalStats } from '@/hooks/useGlobalStats'
 import { StatCard } from '@/components/StatCard'
 import { AccountSelector } from '@/components/AccountSelector'
 import { PeriodSelector } from '@/components/PeriodSelector'
@@ -52,9 +53,7 @@ const CustomPieTooltip = ({ active, payload }: any) => {
 };
 
 export function Statistics() {
-  const trades = useStore(s => s.trades)
-  const dashboardStats = useStore(s => s.dashboardStats)
-  const advancedStats = useStore(s => s.advancedStats)
+  const { trades, dashboardStats, advancedStats } = useGlobalStats()
   const selectedAccountId = useStore(s => s.selectedAccountId)
   const selectedPeriod = useStore(s => s.selectedPeriod)
 

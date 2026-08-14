@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Minus, Square, X } from 'lucide-react'
+import { Minus, Square, X, RefreshCw } from 'lucide-react'
 import { VaynaLogo } from '@/components/VaynaLogo'
 
 export function TitleBar() {
@@ -25,6 +25,13 @@ export function TitleBar() {
       </div>
 
       <div className="flex titlebar-no-drag">
+        <button
+          onClick={() => window.location.reload()}
+          title="Actualiser (Ctrl+R)"
+          className="w-[46px] h-10 flex items-center justify-center text-white/60 hover:text-cyan-400 hover:bg-white/5 transition-colors"
+        >
+          <RefreshCw className="h-[14px] w-[14px]" />
+        </button>
         <button
           onClick={() => api?.minimize()}
           className="w-[46px] h-10 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-colors"

@@ -5,7 +5,8 @@ import { X, Send, Loader2, AlertCircle, Plus, MessageSquare, Trash2, History, Ch
 import { useNavigate } from 'react-router-dom'
 import { VaynaLogo } from '@/components/VaynaLogo'
 import { useStore } from '@/hooks/useStore'
-import { useDatabase } from '@/hooks/useDatabase'
+import { useGlobalStats } from '@/hooks/useGlobalStats'
+import { useCreateTradeMutation, useDeleteAllTradesMutation } from '@/hooks/queries/useTrades'
 import { cn } from '@/lib/utils'
 import { calculateAdvancedStats, calculateAssetPerformance } from '@/lib/statsCalculator'
 import { AI_KNOWLEDGE_BASE, AI_DEEP_LINKS } from '@/lib/aiKnowledgeBase'
@@ -58,10 +59,11 @@ export function AIAssistant({ isLandingPage = false }: { isLandingPage?: boolean
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
   
-  const accounts = useStore(s => s.accounts)
-  const trades = useStore(s => s.trades)
+  const { accounts, trades } = useGlobalStats()
   const selectedAccountId = useStore(s => s.selectedAccountId)
-  const { createTrade, deleteAllTrades } = useDatabase()
+  
+  const createTradeMutation = useCreateTradeMutation()
+  const deleteAllTradesMutation = useDeleteAllTradesMutation()
   const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
   const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
   
@@ -409,7 +411,7 @@ L'utilisateur te parle maintenant :`
           if (!accounts || accounts.length === 0) {
             throw new Error("Vous n'avez aucun compte de trading. Veuillez d'abord créer un compte dans la section 'Comptes'.")
           }
-          await createTrade({
+          await createTradeMutation.mutateAsync({
             accountId: selectedAccountId || accounts[0].id,
             asset: args.pair,
             direction: args.direction,
@@ -421,7 +423,7 @@ L'utilisateur te parle maintenant :`
           } as any)
           actionSuccess = true
         } else if (actionName === 'delete_all_trades') {
-          await deleteAllTrades()
+          await deleteAllTradesMutation.mutateAsync()
           actionSuccess = true
         } else if (actionName === 'sync_mt5') {
           actionSuccess = true

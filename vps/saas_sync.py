@@ -170,8 +170,37 @@ def map_deal_to_trade(exit_deal, entry_deal, user_id, account_id, account_balanc
         "r_multiple": r_multiple,
         "commission": commission,
         "swap": swap,
-        "comment": f"SaaS Sync - {exit_deal.ticket}",
-        "ticket": exit_deal.ticket,
+        "comment": f"Importé via MT5 (#{exit_deal.position_id})",
+        "ticket": exit_deal.position_id,
+        "source": "mt5_sync",
+    }
+
+def map_position_to_trade(position, user_id, account_id):
+    direction = "BUY" if position.type == mt5.POSITION_TYPE_BUY else "SELL"
+    entry_price = position.price_open
+    entry_time = datetime.fromtimestamp(position.time, tz=timezone.utc).isoformat()
+    deal_date = datetime.fromtimestamp(position.time, tz=timezone.utc).strftime("%Y-%m-%d")
+    
+    return {
+        "user_id": user_id,
+        "account_id": account_id,
+        "date": deal_date,
+        "created_date_time": entry_time,
+        "asset": position.symbol,
+        "timeframe": "Auto",
+        "direction": direction,
+        "risk_percent": 1.0,
+        "entry_price": entry_price,
+        "exit_price": position.price_current,
+        "position_size": position.volume,
+        "result": "EN COURS",
+        "pnl_amount": 0,
+        "pnl_percent": 0,
+        "r_multiple": None,
+        "commission": 0,
+        "swap": position.swap,
+        "comment": f"En cours (#{position.ticket})",
+        "ticket": position.ticket,
         "source": "mt5_sync",
     }
 
@@ -231,6 +260,18 @@ def sync_account(acc):
         
     to_date = datetime.now() + timedelta(days=1)
     
+    # --- 1. Synchronisation des positions ouvertes (EN COURS) ---
+    positions = mt5.positions_get()
+    if positions:
+        inserted_open = 0
+        for pos in positions:
+            trade_data = map_position_to_trade(pos, user_id, account_id)
+            if upsert_trade(trade_data):
+                inserted_open += 1
+        if inserted_open > 0:
+            logger.info(f"  => {inserted_open} positions EN COURS mises à jour.")
+            
+    # --- 2. Synchronisation des trades clôturés ---
     deals = mt5.history_deals_get(from_date, to_date)
     if not deals:
         logger.info("  Aucun trade trouvé récemment.")
@@ -245,18 +286,20 @@ def sync_account(acc):
     
     inserted = 0
     for exit_deal in closed:
+        position_id = exit_deal.position_id
+        
         # On vérifie dans la mémoire locale si on a DEJA importé ce ticket un jour.
-        if is_ticket_synced(user_id, exit_deal.ticket):
+        if is_ticket_synced(user_id, position_id):
             continue
             
-        entry_deal = next((d for d in deals if d.position_id == exit_deal.position_id and d.entry == mt5.DEAL_ENTRY_IN), None)
+        entry_deal = next((d for d in deals if d.position_id == position_id and d.entry == mt5.DEAL_ENTRY_IN), None)
         # Utiliser le capital initial (fixe) pour le calcul R:R, pas le solde actuel
         initial_capital = acc.get('initial_capital', 0) or info.balance
         trade_data = map_deal_to_trade(exit_deal, entry_deal, user_id, account_id, initial_capital)
         
         if upsert_trade(trade_data):
-            logger.info(f"  -> NOUVEAU TRADE SYNC: {exit_deal.symbol} (Ticket: {exit_deal.ticket}) | PnL: {trade_data['pnl_amount']}")
-            save_ticket_to_memory(user_id, exit_deal.ticket)
+            logger.info(f"  -> NOUVEAU TRADE CLOTURE: {exit_deal.symbol} (Ticket: {position_id}) | PnL: {trade_data['pnl_amount']}")
+            save_ticket_to_memory(user_id, position_id)
             inserted += 1
             
     if inserted > 0:

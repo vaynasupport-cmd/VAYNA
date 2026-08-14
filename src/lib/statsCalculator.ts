@@ -47,8 +47,12 @@ interface Filters {
 }
 
 function filterTrades(trades: Trade[], filters?: Filters): Trade[] {
-  if (!filters) return trades
-  return trades.filter(trade => {
+  // Always exclude open trades from statistical calculations
+  const validTrades = trades.filter(t => t.result !== 'EN COURS')
+  
+  if (!filters) return validTrades
+
+  return validTrades.filter(trade => {
     if (filters.accountId && trade.accountId !== filters.accountId) return false
     if (filters.startDate && trade.date < filters.startDate) return false
     if (filters.endDate && trade.date > filters.endDate) return false

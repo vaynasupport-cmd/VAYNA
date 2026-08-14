@@ -6,6 +6,7 @@ import { MobileHeader } from './MobileHeader'
 import { AIAssistant } from './AIAssistant'
 import { useStore } from '@/hooks/useStore'
 import { useNotificationEngine } from '@/hooks/useNotificationEngine'
+import { useMT5Account } from '@/hooks/useMT5Account'
 import { cn } from '@/lib/utils'
 
 export function Layout() {
@@ -15,6 +16,7 @@ export function Layout() {
   const isElectron = navigator.userAgent.toLowerCase().includes('electron')
 
   useNotificationEngine()
+  useMT5Account() // Keep MT5 Realtime listener active on all pages
 
   return (
     <div className={cn("bg-background", isElectron ? "min-h-[calc(100vh-40px)]" : "min-h-screen")}>

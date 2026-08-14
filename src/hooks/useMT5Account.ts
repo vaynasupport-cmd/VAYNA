@@ -10,6 +10,7 @@ import { useStore } from './useStore'
 import { useAuth } from '@features/auth/useAuth'
 import { useToast } from './useToast'
 import { supabase } from '@/lib/supabaseClient'
+import { useQueryClient } from '@tanstack/react-query'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -39,7 +40,7 @@ export function useMT5Account() {
   const mt5Sync = useStore(s => s.mt5Sync)
   const setMT5Sync = useStore(s => s.setMT5Sync)
   const resetMT5Sync = useStore(s => s.resetMT5Sync)
-  const triggerRefresh = useStore(s => s.triggerRefresh)
+  const queryClient = useQueryClient()
   const { user } = useAuth()
   const { toast } = useToast()
   const realtimeChannelRef = useRef<ReturnType<typeof supabase.channel> | null>(null)
@@ -92,8 +93,9 @@ export function useMT5Account() {
           const newTrade = payload.new as any
           // Only react to trades from the Python sync script
           if (newTrade?.source === 'mt5_sync') {
-            // Trigger global data refresh so all pages update
-            triggerRefresh()
+            // Invalidate React Query cache so all pages update
+            queryClient.invalidateQueries({ queryKey: ['trades'] })
+            queryClient.invalidateQueries({ queryKey: ['accounts'] })
 
             // Update last sync time and status
             setMT5Sync({
@@ -237,8 +239,8 @@ export function useMT5Account() {
     })
 
     // Refresh the trades list in the UI
-    triggerRefresh()
-  }, [user, mt5Sync.mt5AccountId, setMT5Sync, triggerRefresh])
+    queryClient.invalidateQueries({ queryKey: ['trades'] })
+  }, [user, mt5Sync.mt5AccountId, setMT5Sync, queryClient])
 
   // ─── Pause/Resume: Toggle is_active without deleting ────────────────────
   const toggleMT5SyncStatus = useCallback(async (isActive: boolean) => {

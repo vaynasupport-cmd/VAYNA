@@ -65,11 +65,11 @@ export function MobileTradeCard({ trade, account, onView, onEdit, onDelete, onSc
             <p className="text-[10px] text-muted-foreground/70 uppercase tracking-wider font-medium mb-0.5">P&L Net</p>
             <p className={cn(
               "text-lg font-black number-font tracking-tight leading-none",
-              isPositive ? "text-emerald-500" : "text-red-500"
+              trade.result === 'EN COURS' ? "text-muted-foreground" : isPositive ? "text-emerald-500" : "text-red-500"
             )}>
-              {isPositive ? '+' : ''}{formatCurrency(netPnl)}
+              {trade.result === 'EN COURS' ? '-' : (isPositive ? '+' : '') + formatCurrency(netPnl)}
             </p>
-            {trade.rMultiple !== undefined && trade.rMultiple !== null && (
+            {trade.result !== 'EN COURS' && trade.rMultiple !== undefined && trade.rMultiple !== null && (
               <p className={cn(
                 "text-xs font-semibold mt-0.5",
                 trade.rMultiple >= 0 ? "text-emerald-500/80" : "text-red-500/80"

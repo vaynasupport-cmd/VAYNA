@@ -4,7 +4,8 @@ import { X } from 'lucide-react'
 import Papa from 'papaparse'
 
 import { useStore } from '@/hooks/useStore'
-import { useDatabase } from '@/hooks/useDatabase'
+import { useGlobalStats } from '@/hooks/useGlobalStats'
+import { useDeleteTradeMutation, useDeleteAllTradesMutation } from '@/hooks/queries/useTrades'
 import { useToast } from '@/hooks/useToast'
 import type { Trade } from '@/types'
 
@@ -28,10 +29,11 @@ import {
 } from '@/components/ui/alert-dialog'
 
 export function Trades() {
-  const trades = useStore(s => s.trades)
-  const accounts = useStore(s => s.accounts)
+  const { trades, accounts } = useGlobalStats()
   const selectedAccountId = useStore(s => s.selectedAccountId)
-  const { deleteTrade, deleteAllTrades, selectImage } = useDatabase()
+  
+  const deleteTradeMutation = useDeleteTradeMutation()
+  const deleteAllTradesMutation = useDeleteAllTradesMutation()
   const { toast } = useToast()
 
   // Filters
@@ -69,7 +71,7 @@ export function Trades() {
   const handleDelete = async () => {
     if (!deletingTrade) return
     try {
-      await deleteTrade(deletingTrade.id)
+      await deleteTradeMutation.mutateAsync(deletingTrade.id)
       setDeletingTrade(null)
       toast({ title: 'Succès', description: 'Le trade a été supprimé.' })
     } catch (error) {
@@ -79,7 +81,15 @@ export function Trades() {
   }
 
   const handleFormImageUpload = async () => {
-    const image = await selectImage()
+    let image = null
+    try {
+      if (window.electronAPI) {
+        image = await window.electronAPI.fs.selectImage()
+      }
+    } catch (error) {
+      console.error('Error selecting image:', error)
+    }
+    
     if (image) {
       tradeForm.setFormScreenshots([...tradeForm.formScreenshots, image])
     }
@@ -175,7 +185,7 @@ export function Trades() {
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               onClick={async () => {
                 try {
-                  await deleteAllTrades()
+                  await deleteAllTradesMutation.mutateAsync()
                   setShowDeleteAllDialog(false)
                   toast({ title: 'Succès', description: 'Tout l\'historique a été supprimé' })
                 } catch (error) {

@@ -42,8 +42,6 @@ function PageLoader() {
   )
 }
 
-import { useDatabase } from '@/hooks/useDatabase'
-import { useStore } from '@/hooks/useStore'
 import { TitleBar } from '@/components/TitleBar'
 
 function ScrollToTop() {
@@ -57,19 +55,7 @@ function ScrollToTop() {
   return null
 }
 
-/**
- * Handles fetching all Supabase data globally so it's only done once.
- */
-function GlobalLoader() {
-  const { loadAllData } = useDatabase()
-  const refreshTrigger = useStore(s => s.refreshTrigger)
-  
-  useEffect(() => {
-    loadAllData()
-  }, [loadAllData, refreshTrigger])
-  
-  return null
-}
+
 
 import { Capacitor } from '@capacitor/core'
 import { useAuth } from '@features/auth/useAuth'
@@ -104,7 +90,6 @@ function AppContent() {
       <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         {isElectron && <TitleBar />}
         <div className={isElectron ? "pt-10" : ""}>
-          <GlobalLoader />
           <ScrollToTop />
           <Suspense fallback={<PageLoader />}>
             <Routes>

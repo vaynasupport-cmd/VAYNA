@@ -2,10 +2,11 @@ import { useEffect } from 'react'
 import { useStore } from './useStore'
 import { useToast } from './useToast'
 import { isSameDay, differenceInDays } from 'date-fns'
+import { useGlobalStats } from '@/hooks/useGlobalStats'
 
 export function useNotificationEngine() {
   const notificationPreferences = useStore(s => s.notificationPreferences)
-  const trades = useStore(s => s.trades)
+  const { trades } = useGlobalStats()
   const { toast } = useToast()
 
   useEffect(() => {

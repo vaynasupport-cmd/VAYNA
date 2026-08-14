@@ -19,8 +19,8 @@ import {
   ChevronRight,
   Crosshair
 } from 'lucide-react'
-import { useStore } from '@/hooks/useStore'
-import { useDatabase } from '@/hooks/useDatabase'
+import { useGlobalStats } from '@/hooks/useGlobalStats'
+import { useCreateJournalMutation, useUpdateJournalMutation, useDeleteJournalMutation } from '@/hooks/queries/useJournal'
 import { useToast } from '@/hooks/useToast'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -71,8 +71,10 @@ const marketConditions = [
 ]
 
 export function Journal() {
-  const journalEntries = useStore(s => s.journalEntries)
-  const { createJournalEntry, updateJournalEntry, deleteJournalEntry } = useDatabase()
+  const { journalEntries } = useGlobalStats()
+  const createJournalMutation = useCreateJournalMutation()
+  const updateJournalMutation = useUpdateJournalMutation()
+  const deleteJournalMutation = useDeleteJournalMutation()
   const { toast } = useToast()
 
   const [showAddDialog, setShowAddDialog] = useState(false)
@@ -131,7 +133,7 @@ export function Journal() {
     }
     try {
       setIsLoading(true)
-      await createJournalEntry(formData)
+      await createJournalMutation.mutateAsync(formData)
       setShowAddDialog(false)
       resetForm()
       toast({ title: 'Succès', description: 'Évaluation psychologique enregistrée.' })
@@ -146,7 +148,7 @@ export function Journal() {
     if (!editingEntry || !formData.content.trim()) return
     try {
       setIsLoading(true)
-      await updateJournalEntry(editingEntry.id, formData)
+      await updateJournalMutation.mutateAsync({ id: editingEntry.id, data: formData })
       setEditingEntry(null)
       resetForm()
       setShowAddDialog(false)
@@ -162,7 +164,7 @@ export function Journal() {
     if (!deletingEntry) return
     try {
       setIsLoading(true)
-      await deleteJournalEntry(deletingEntry.id)
+      await deleteJournalMutation.mutateAsync(deletingEntry.id)
       setDeletingEntry(null)
       toast({ title: 'Succès', description: 'Archive supprimée.' })
     } catch (error) {

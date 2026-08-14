@@ -3,12 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Cloud, Wifi, WifiOff, RefreshCw, Server, User, Lock, Eye, EyeOff, Shield, Info, Clock, Zap } from 'lucide-react'
 import { useMT5Account } from '@/hooks/useMT5Account'
 import { useStore } from '@/hooks/useStore'
+import { useGlobalStats } from '@/hooks/useGlobalStats'
 import { useToast } from '@/hooks/useToast'
 import { cn } from '@/lib/utils'
 
 export function MT5Sync() {
   const { mt5Sync, connectMT5, disconnectMT5, refreshSyncCount } = useMT5Account()
-  const accounts = useStore(s => s.accounts)
+  const { accounts } = useGlobalStats()
   const autoImportEnabled = useStore(s => s.autoImportEnabled)
   const { toast } = useToast()
 

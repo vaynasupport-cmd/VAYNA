@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, Plus, Wallet } from 'lucide-react'
 import { useStore } from '@/hooks/useStore'
-import { useDatabase } from '@/hooks/useDatabase'
+import { useGlobalStats } from '@/hooks/useGlobalStats'
+import { useCreateAccountMutation } from '@/hooks/queries/useAccounts'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -16,11 +17,10 @@ import { Badge } from '@/components/ui/badge'
 import { cn, formatCurrency, getStatusColor } from '@/lib/utils'
 
 export function AccountSelector() {
-  const accounts = useStore(s => s.accounts)
+  const { accounts } = useGlobalStats()
   const selectedAccountId = useStore(s => s.selectedAccountId)
   const setSelectedAccountId = useStore(s => s.setSelectedAccountId)
-  const triggerRefresh = useStore(s => s.triggerRefresh)
-  const { createAccount } = useDatabase()
+  const createAccountMutation = useCreateAccountMutation()
   const [isOpen, setIsOpen] = useState(false)
   const [showAddDialog, setShowAddDialog] = useState(false)
   const [newAccount, setNewAccount] = useState({
@@ -36,7 +36,7 @@ export function AccountSelector() {
   const handleCreateAccount = async () => {
     if (!newAccount.name) return
     
-    await createAccount({
+    await createAccountMutation.mutateAsync({
       name: newAccount.name,
       propFirm: newAccount.propFirm || null,
       initialCapital: Number(newAccount.initialCapital),
@@ -52,7 +52,6 @@ export function AccountSelector() {
       maxDrawdownPercent: 10,
       targetPercent: 10,
     })
-    triggerRefresh()
   }
 
   return (

@@ -220,17 +220,19 @@ export function TradeList({
                         <td className={cn("px-1.5 py-1.5 text-xs text-right whitespace-nowrap", (trade.commission || 0) < 0 ? 'text-trading-red' : 'text-muted-foreground')}>
                           {trade.commission != null ? formatCurrency(trade.commission) : '-'}
                         </td>
-                        <td className={cn("px-1.5 py-1.5 text-xs text-right font-medium whitespace-nowrap", (trade.pnlAmount - (trade.commission || 0) - (trade.swap || 0)) >= 0 ? 'text-trading-green' : 'text-trading-red')}>
-                          {formatCurrency(trade.pnlAmount - (trade.commission || 0) - (trade.swap || 0))}
+                        <td className={cn("px-1.5 py-1.5 text-xs text-right font-medium whitespace-nowrap", trade.result === 'EN COURS' ? 'text-muted-foreground' : (trade.pnlAmount - (trade.commission || 0) - (trade.swap || 0)) >= 0 ? 'text-trading-green' : 'text-trading-red')}>
+                          {trade.result === 'EN COURS' ? '-' : formatCurrency(trade.pnlAmount - (trade.commission || 0) - (trade.swap || 0))}
                         </td>
                         <td className={cn(
                           "px-1.5 py-1.5 text-xs text-right font-bold whitespace-nowrap",
-                          getResultColor(trade.result)
+                          trade.result === 'EN COURS' ? 'text-muted-foreground' : getResultColor(trade.result)
                         )}>
-                          {trade.pnlAmount >= 0 ? '+' : ''}{formatCurrency(trade.pnlAmount)}
+                          {trade.result === 'EN COURS' ? '-' : (trade.pnlAmount >= 0 ? '+' : '') + formatCurrency(trade.pnlAmount)}
                         </td>
                         <td className="px-1.5 py-1.5 text-xs text-right whitespace-nowrap">
-                          {trade.rMultiple !== undefined && trade.rMultiple !== null ? (
+                          {trade.result === 'EN COURS' ? (
+                            <span className="text-muted-foreground">-</span>
+                          ) : trade.rMultiple !== undefined && trade.rMultiple !== null ? (
                             <span className={cn(
                               trade.rMultiple >= 0 ? 'text-trading-green' : 'text-trading-red'
                             )}>

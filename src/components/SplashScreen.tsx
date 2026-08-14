@@ -17,9 +17,9 @@ export function SplashScreen() {
         animate={{ scale: 1, opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         style={{ willChange: "transform, opacity" }}
-        className="relative z-10 flex flex-col items-center gap-16"
+        className="relative z-10 flex flex-col items-center gap-12 sm:gap-16 w-full px-4"
       >
-        <div className="scale-[0.85] sm:scale-100 md:scale-125">
+        <div className="flex justify-center items-center w-full transform scale-[0.65] sm:scale-90 md:scale-110 lg:scale-125 origin-center">
           <VaynaLogo size={72} showText />
         </div>
         
@@ -32,7 +32,7 @@ export function SplashScreen() {
           className="flex flex-col items-center gap-5"
         >
           {/* Animated elegant line */}
-          <div className="w-64 h-[2px] bg-white/10 overflow-hidden relative rounded-full">
+          <div className="w-48 sm:w-64 h-[2px] bg-white/10 overflow-hidden relative rounded-full">
             <motion.div
               initial={{ x: "-100%" }}
               animate={{ x: "200%" }}
@@ -50,9 +50,9 @@ export function SplashScreen() {
             animate={{ opacity: [0.3, 0.8, 0.3] }}
             transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
             style={{ willChange: "opacity" }}
-            className="text-[11px] font-semibold tracking-[0.35em] text-cyan-400/70 uppercase"
+            className="text-[9px] sm:text-[11px] font-semibold tracking-[0.35em] text-cyan-400/70 uppercase text-center"
           >
-            Chargement sécurisé
+            Chargement
           </motion.span>
         </motion.div>
       </motion.div>

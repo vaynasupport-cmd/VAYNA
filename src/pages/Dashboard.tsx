@@ -5,6 +5,7 @@ import {
   BarChart3, Sparkles, ArrowUpRight, ArrowDownRight, Zap, Award, Target
 } from 'lucide-react'
 import { useStore } from '@/hooks/useStore'
+import { useGlobalStats } from '@/hooks/useGlobalStats'
 import { StatCard } from '@/components/StatCard'
 import { AccountSelector } from '@/components/AccountSelector'
 import { PeriodSelector } from '@/components/PeriodSelector'
@@ -38,12 +39,15 @@ const item = {
 
 export function Dashboard() {
   const { toggleMT5SyncStatus } = useMT5Account()
-  const accounts = useStore(s => s.accounts)
+  const { 
+    accounts, 
+    dashboardStats, 
+    advancedStats, 
+    equityCurve, 
+    trades, 
+    monthlyPerformance: globalMonthlyPerformance
+  } = useGlobalStats()
   const selectedAccountId = useStore(s => s.selectedAccountId)
-  const dashboardStats = useStore(s => s.dashboardStats)
-  const advancedStats = useStore(s => s.advancedStats)
-  const equityCurve = useStore(s => s.equityCurve)
-  const trades = useStore(s => s.trades)
   const selectedPeriod = useStore(s => s.selectedPeriod)
   const autoImportEnabled = useStore(s => s.autoImportEnabled)
   const setAutoImportEnabled = useStore(s => s.setAutoImportEnabled)
@@ -162,23 +166,7 @@ export function Dashboard() {
     return cells
   }, [trades, selectedAccountId])
 
-  // Calcul Performance Mensuelle (Mois calendaires)
-  const monthlyPerformance = useMemo(() => {
-    const list = selectedAccountId ? trades.filter(t => t.accountId === selectedAccountId) : trades;
-    const groups: Record<string, { pnl: number; count: number; wins: number; losses: number }> = {};
-    for (const t of list) {
-      if (!t.date) continue;
-      const d = new Date(t.date);
-      if (isNaN(d.getTime())) continue;
-      const m = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-      if (!groups[m]) groups[m] = { pnl: 0, count: 0, wins: 0, losses: 0 };
-      groups[m].pnl += t.pnlAmount;
-      groups[m].count++;
-      if (t.pnlAmount > 0) groups[m].wins++;
-      else if (t.pnlAmount < 0) groups[m].losses++;
-    }
-    return Object.entries(groups).map(([date, data]) => ({ date, ...data })).sort((a, b) => a.date.localeCompare(b.date));
-  }, [trades, selectedAccountId]);
+  const monthlyPerformance = globalMonthlyPerformance
 
   // Calcul Performance Hebdomadaire (Semaines calendaires)
   const weeklyPerformance = useMemo(() => {
