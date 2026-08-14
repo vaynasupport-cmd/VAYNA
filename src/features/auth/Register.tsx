@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@features/auth/useAuth'
 import { Eye, EyeOff, UserPlus, AlertCircle, CheckCircle, ChevronRight, ChevronLeft, User, Mail, Lock, Calendar } from 'lucide-react'
 import { VaynaLogo } from '@/components/VaynaLogo'
 import { cn } from '@/lib/utils'

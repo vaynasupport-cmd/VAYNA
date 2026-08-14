@@ -11,7 +11,7 @@ import {
   LogIn, ChevronLeft, ChevronRight, MessageSquare, Download
 } from 'lucide-react'
 import { VaynaLogo } from '@/components/VaynaLogo'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@features/auth/useAuth'
 import { FeaturesStack } from '@/components/FeaturesStack'
 import { AIAssistant } from '@/components/AIAssistant'
 

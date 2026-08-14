@@ -1,6 +1,6 @@
 import { useEffect, lazy, Suspense } from 'react'
 import { HashRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
-import { AuthProvider } from '@/contexts/AuthContext'
+import { AuthProvider } from '@features/auth/AuthContext'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { Layout } from '@/components/Layout'
 import { Toaster } from '@/components/ui/toaster'
@@ -8,10 +8,10 @@ import { Toaster } from '@/components/ui/toaster'
 // ─── Lazy-loaded pages (code splitting) ──────────────────────────────────────
 // Public pages
 const LandingPage = lazy(() => import('@/pages/LandingPage').then(m => ({ default: m.LandingPage })))
-const Login = lazy(() => import('@/pages/Login').then(m => ({ default: m.Login })))
-const Register = lazy(() => import('@/pages/Register').then(m => ({ default: m.Register })))
-const ForgotPassword = lazy(() => import('@/pages/ForgotPassword').then(m => ({ default: m.ForgotPassword })))
-const ResetPassword = lazy(() => import('@/pages/ResetPassword').then(m => ({ default: m.ResetPassword })))
+const Login = lazy(() => import('@features/auth/Login').then(m => ({ default: m.Login })))
+const Register = lazy(() => import('@features/auth/Register').then(m => ({ default: m.Register })))
+const ForgotPassword = lazy(() => import('@features/auth/ForgotPassword').then(m => ({ default: m.ForgotPassword })))
+const ResetPassword = lazy(() => import('@features/auth/ResetPassword').then(m => ({ default: m.ResetPassword })))
 const FAQPage = lazy(() => import('@/pages/FAQPage').then(m => ({ default: m.FAQPage })))
 const FeaturesPage = lazy(() => import('@/pages/FeaturesPage').then(m => ({ default: m.FeaturesPage })))
 const ContactPage = lazy(() => import('@/pages/ContactPage').then(m => ({ default: m.ContactPage })))
@@ -72,7 +72,7 @@ function GlobalLoader() {
 }
 
 import { Capacitor } from '@capacitor/core'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@features/auth/useAuth'
 import { SplashScreen } from '@/components/SplashScreen'
 import { AnimatePresence } from 'framer-motion'
 import { useState, useEffect as useReactEffect } from 'react'
@@ -166,11 +166,24 @@ function AppContent() {
   )
 }
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      retry: 1,
+    },
+  },
+})
+
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </QueryClientProvider>
   )
 }
 

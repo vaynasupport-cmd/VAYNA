@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useStore } from './useStore'
 import { supabase } from '@/lib/supabaseClient'
-import { useAuth } from './useAuth'
+import { useAuth } from '@features/auth/useAuth'
 import {
   calculateDashboardStats,
   calculateAdvancedStats,

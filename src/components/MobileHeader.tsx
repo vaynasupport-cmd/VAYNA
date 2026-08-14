@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Sun, Moon, LogOut } from 'lucide-react'
 import { useTheme } from '@/components/ThemeProvider'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@features/auth/useAuth'
 import { VaynaLogo } from '@/components/VaynaLogo'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'

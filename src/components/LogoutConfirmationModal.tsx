@@ -11,7 +11,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { AlertTriangle } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@features/auth/useAuth';
 import { useNavigate } from 'react-router-dom';
 
 interface LogoutConfirmationModalProps {

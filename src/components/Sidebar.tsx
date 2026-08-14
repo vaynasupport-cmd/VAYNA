@@ -13,7 +13,7 @@ import {
   Moon
 } from 'lucide-react'
 import { useTheme } from '@/components/ThemeProvider'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@features/auth/useAuth'
 import { useStore } from '@/hooks/useStore'
 import { VaynaLogo } from '@/components/VaynaLogo'
 import { cn } from '@/lib/utils'

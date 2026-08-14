@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   User, Shield, Camera, Save, Loader2, KeyRound, Mail, AlertCircle, Sun, Moon, Palette, Bell, Link2, CheckCircle2, Database, Trash2, Sparkles,
 } from 'lucide-react'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@features/auth/useAuth'
 import { useStore } from '@/hooks/useStore'
 import { useToast } from '@/hooks/useToast'
 import { useTheme } from '@/components/ThemeProvider'

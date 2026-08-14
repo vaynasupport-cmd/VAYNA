@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useRef } from 'react'
 import { useStore } from './useStore'
-import { useAuth } from './useAuth'
+import { useAuth } from '@features/auth/useAuth'
 import { useToast } from './useToast'
 import { supabase } from '@/lib/supabaseClient'
 

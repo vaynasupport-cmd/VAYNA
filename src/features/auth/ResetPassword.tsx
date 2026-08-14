@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@features/auth/useAuth'
 import { supabase } from '@/lib/supabaseClient'
 import { Eye, EyeOff, Lock, AlertCircle, CheckCircle } from 'lucide-react'
 import { VaynaLogo } from '@/components/VaynaLogo'
