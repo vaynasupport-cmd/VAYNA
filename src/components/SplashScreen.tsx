@@ -19,7 +19,7 @@ export function SplashScreen() {
         style={{ willChange: "transform, opacity" }}
         className="relative z-10 flex flex-col items-center gap-16"
       >
-        <div className="scale-125">
+        <div className="scale-[0.85] sm:scale-100 md:scale-125">
           <VaynaLogo size={72} showText />
         </div>
         
