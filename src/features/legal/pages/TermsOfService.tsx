@@ -36,7 +36,7 @@ export function TermsOfService() {
           <div className="prose prose-invert prose-slate max-w-none prose-headings:text-white prose-a:text-cyan-400 hover:prose-a:text-cyan-300">
             <h2 className="text-xl font-semibold mt-8 mb-4 text-cyan-400">Article 1 - Mentions légales</h2>
             <p>
-              L'application VAYNA est éditée par Abderraouf Taibi (Projet VAYNA en cours d'immatriculation), dont le siège social est situé à Béjaïa (Algérie).<br/>
+              L'application VAYNA est éditée par Abderraouf Taibi (Projet VAYNA en cours d'immatriculation), dont le siège social est situé à Tizi Ouzou (Algérie).<br/>
               Contact email : <a href="mailto:vayna.support@gmail.com">vayna.support@gmail.com</a>
             </p>
 
