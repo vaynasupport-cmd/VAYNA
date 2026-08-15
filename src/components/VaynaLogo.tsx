@@ -6,50 +6,24 @@ interface VaynaLogoProps {
 
 export function VaynaLogo({ size = 36, className = '', showText = false }: VaynaLogoProps) {
   const svg = (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 36 36"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={!showText ? className : ''}
+    <div 
+      className={`flex items-center justify-center bg-black rounded-lg ${!showText ? className : ''}`}
+      style={{ width: size, height: size, flexShrink: 0 }}
     >
-      <defs>
-        <linearGradient id="vayna-grad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#ffffff" />
-          <stop offset="45%" stopColor="#93c5fd" />
-          <stop offset="100%" stopColor="#3b82f6" />
-        </linearGradient>
-        <filter id="vayna-glow">
-          <feGaussianBlur stdDeviation="1.5" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-
-      {/* Background */}
-      <rect width="36" height="36" rx="8" fill="#000000" />
-
-      {/*
-        VΛ — V left, Λ right (no crossbar)
-        Centered as a group, tight spacing
-      */}
-      <text
-        x="18"
-        y="24"
-        textAnchor="middle"
-        fontFamily="'Inter', 'Arial Black', sans-serif"
-        fontWeight="900"
-        fontSize="17"
-        letterSpacing="1"
-        fill="url(#vayna-grad)"
-        filter="url(#vayna-glow)"
+      <span
+        className="font-black select-none tracking-widest relative z-10"
+        style={{
+          fontSize: size * 0.45,
+          background: 'linear-gradient(135deg, #ffffff 0%, #93c5fd 40%, #3b82f6 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          fontFamily: "'Inter', sans-serif",
+          filter: 'drop-shadow(0 0 2px rgba(59,130,246,0.5))',
+        }}
       >
-        VΛ
-      </text>
-    </svg>
+        V<span style={{ fontFamily: 'Georgia, serif' }}>Λ</span>
+      </span>
+    </div>
   )
 
   if (!showText) return svg
