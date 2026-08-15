@@ -5,7 +5,7 @@ import {
   Wallet,
   TrendingUp,
   BarChart3,
-  Settings
+  BookOpen
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -20,7 +20,7 @@ const menuItems: MenuItem[] = [
   { path: '/app/accounts', icon: Wallet, label: 'Comptes' },
   { path: '/app/trades', icon: TrendingUp, label: 'Journal' },
   { path: '/app/statistics', icon: BarChart3, label: 'Stats' },
-  { path: '/app/settings', icon: Settings, label: 'Réglages' },
+  { path: '/app/journal', icon: BookOpen, label: 'Notes' },
 ]
 
 export function MobileBottomNav() {

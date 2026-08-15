@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Sun, Moon, LogOut } from 'lucide-react'
+import { Sun, Moon, LogOut, Settings } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { useTheme } from '@/components/ThemeProvider'
 import { useAuth } from '@features/auth/useAuth'
 import { VaynaLogo } from '@/components/VaynaLogo'
@@ -108,11 +109,21 @@ export function MobileHeader() {
                     className="absolute right-0 top-10 z-50 w-48 rounded-xl bg-card border border-border/60 shadow-xl overflow-hidden"
                   >
                     <div className="px-3 py-2.5 border-b border-border/40">
-                      <p className="text-xs font-medium truncate">{user?.email}</p>
+                      <p className="text-xs font-medium truncate text-muted-foreground">{user?.email}</p>
                     </div>
+                    
+                    <Link
+                      to="/app/settings"
+                      onClick={() => setShowMenu(false)}
+                      className="w-full flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent transition-colors"
+                    >
+                      <Settings className="h-3.5 w-3.5" />
+                      Paramètres
+                    </Link>
+                    
                     <LogoutConfirmationModal>
                       <button
-                        className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-destructive hover:bg-destructive/10 transition-colors"
+                        className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-destructive hover:bg-destructive/10 transition-colors border-t border-border/40"
                       >
                         <LogOut className="h-3.5 w-3.5" />
                         Déconnexion

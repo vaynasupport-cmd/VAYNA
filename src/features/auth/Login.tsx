@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@features/auth/useAuth'
 import { Eye, EyeOff, LogIn, AlertCircle, ChevronLeft, CheckCircle } from 'lucide-react'
 import { VaynaLogo } from '@/components/VaynaLogo'
+import { LegalModal } from '@/features/legal/components/LegalModal'
 import { supabase } from '@/lib/supabaseClient'
 
 export function Login() {
@@ -10,6 +11,7 @@ export function Login() {
   const successMessage = (location.state as any)?.message as string | undefined
   const [email, setEmail] = useState((location.state as any)?.email || '')
   const [password, setPassword] = useState('')
+  const [modalType, setModalType] = useState<'terms' | 'privacy' | null>(null)
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -294,13 +296,27 @@ export function Login() {
               <div className="mt-3 text-center">
                 <p className="text-[11px] text-slate-500 leading-tight">
                   En continuant avec Google, vous confirmez avoir lu et accepté nos{' '}
-                  <Link to="/terms" className="text-cyan-500/70 hover:text-cyan-400 hover:underline transition-colors" onClick={(e) => e.stopPropagation()}>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setModalType('terms')
+                    }}
+                    className="text-cyan-500/70 hover:text-cyan-400 hover:underline transition-colors focus:outline-none"
+                  >
                     Conditions d'utilisation
-                  </Link>
+                  </button>
                   {' '}et notre{' '}
-                  <Link to="/privacy" className="text-cyan-500/70 hover:text-cyan-400 hover:underline transition-colors" onClick={(e) => e.stopPropagation()}>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setModalType('privacy')
+                    }}
+                    className="text-cyan-500/70 hover:text-cyan-400 hover:underline transition-colors focus:outline-none"
+                  >
                     Politique de confidentialité
-                  </Link>.
+                  </button>.
                 </p>
               </div>
 
@@ -312,6 +328,12 @@ export function Login() {
           )}
         </div>
       </div>
+
+      <LegalModal
+        type={modalType || 'terms'}
+        isOpen={modalType !== null}
+        onClose={() => setModalType(null)}
+      />
     </div>
   )
 }
