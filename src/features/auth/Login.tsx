@@ -291,6 +291,19 @@ export function Login() {
                 )}
               </button>
 
+              <div className="mt-3 text-center">
+                <p className="text-[11px] text-slate-500 leading-tight">
+                  En continuant avec Google, vous confirmez avoir lu et accepté nos{' '}
+                  <Link to="/terms" className="text-cyan-500/70 hover:text-cyan-400 hover:underline transition-colors" onClick={(e) => e.stopPropagation()}>
+                    Conditions d'utilisation
+                  </Link>
+                  {' '}et notre{' '}
+                  <Link to="/privacy" className="text-cyan-500/70 hover:text-cyan-400 hover:underline transition-colors" onClick={(e) => e.stopPropagation()}>
+                    Politique de confidentialité
+                  </Link>.
+                </p>
+              </div>
+
               <div className="auth-footer mt-6">
                 <span className="auth-footer-text">Pas encore de compte ?</span>
                 <Link to="/register" className="auth-link">Créer un compte</Link>
