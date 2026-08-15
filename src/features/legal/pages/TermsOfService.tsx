@@ -100,7 +100,7 @@ export function TermsOfService() {
 
             <h2 className="text-xl font-semibold mt-8 mb-4 text-cyan-400">Article 13 - Droit applicable et juridiction compétente</h2>
             <p>
-              La législation algérienne s'applique au présent contrat. En cas d'absence de résolution amiable d'un litige né entre les parties, les tribunaux de Béjaïa (Algérie) seront seuls compétents.
+              La législation algérienne s'applique au présent contrat. En cas d'absence de résolution amiable d'un litige né entre les parties, les tribunaux de Tizi Ouzou (Algérie) seront seuls compétents.
             </p>
           </div>
         </div>
