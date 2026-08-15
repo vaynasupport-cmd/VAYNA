@@ -18,6 +18,7 @@ export function PrivacyPolicy() {
           <VaynaLogo size={32} showText />
         </div>
 
+        <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-8 md:p-12 shadow-xl backdrop-blur-sm">
           <PrivacyContent />
         </div>
       </div>
