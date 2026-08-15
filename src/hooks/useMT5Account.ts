@@ -79,8 +79,9 @@ export function useMT5Account() {
     if (!user) return
 
     // Subscribe to new trades inserted by the Python script
+    // Use a unique channel name to prevent crashes in React 18 Strict Mode
     const channel = supabase
-      .channel(`mt5-trades-${user.id}`)
+      .channel(`mt5-trades-${user.id}-${Date.now()}`)
       .on(
         'postgres_changes',
         {
