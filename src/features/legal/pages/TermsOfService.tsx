@@ -36,8 +36,8 @@ export function TermsOfService() {
           <div className="prose prose-invert prose-slate max-w-none prose-headings:text-white prose-a:text-cyan-400 hover:prose-a:text-cyan-300">
             <h2 className="text-xl font-semibold mt-8 mb-4 text-cyan-400">Article 1 - Mentions légales</h2>
             <p>
-              L'application VAYNA est éditée par [NOM_DE_LA_SOCIETE], société [FORME_JURIDIQUE] au capital de [MONTANT] €, dont le siège social est situé au [ADRESSE_COMPLETE], immatriculée au Registre du Commerce et des Sociétés de [VILLE] sous le numéro [NUMERO_SIRET].<br/>
-              Contact email : <a href="mailto:[EMAIL_CONTACT]">[EMAIL_CONTACT]</a>
+              L'application VAYNA est éditée par Abderraouf Taibi (Projet VAYNA en cours d'immatriculation), dont le siège social est situé à Béjaïa (Algérie).<br/>
+              Contact email : <a href="mailto:vayna.support@gmail.com">vayna.support@gmail.com</a>
             </p>
 
             <h2 className="text-xl font-semibold mt-8 mb-4 text-cyan-400">Article 2 - Objet</h2>
@@ -100,7 +100,7 @@ export function TermsOfService() {
 
             <h2 className="text-xl font-semibold mt-8 mb-4 text-cyan-400">Article 13 - Droit applicable et juridiction compétente</h2>
             <p>
-              La législation française s'applique au présent contrat. En cas d'absence de résolution amiable d'un litige né entre les parties, les tribunaux du ressort de la Cour d'appel de [VILLE] seront seuls compétents.
+              La législation algérienne s'applique au présent contrat. En cas d'absence de résolution amiable d'un litige né entre les parties, les tribunaux de Béjaïa (Algérie) seront seuls compétents.
             </p>
           </div>
         </div>
