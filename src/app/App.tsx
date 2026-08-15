@@ -16,6 +16,8 @@ const FAQPage = lazy(() => import('@/pages/FAQPage').then(m => ({ default: m.FAQ
 const FeaturesPage = lazy(() => import('@/pages/FeaturesPage').then(m => ({ default: m.FeaturesPage })))
 const ContactPage = lazy(() => import('@/pages/ContactPage').then(m => ({ default: m.ContactPage })))
 const DownloadPage = lazy(() => import('@/pages/DownloadPage').then(m => ({ default: m.DownloadPage })))
+const PrivacyPolicy = lazy(() => import('@features/legal/pages/PrivacyPolicy').then(m => ({ default: m.PrivacyPolicy })))
+const TermsOfService = lazy(() => import('@features/legal/pages/TermsOfService').then(m => ({ default: m.TermsOfService })))
 
 // App pages
 const Introduction = lazy(() => import('@/pages/Introduction').then(m => ({ default: m.Introduction })))
@@ -99,6 +101,8 @@ function AppContent() {
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
               
               {/* Pages marketing uniquement sur le web */}
               {!isNativeApp && (

@@ -454,6 +454,8 @@ export function LandingPage() {
           </div>
           <div style={{ display: 'flex', gap: '24px' }}>
             <Link to="/faq" style={{ color: 'rgba(240,244,255,0.35)', textDecoration: 'none', fontSize: '13px', fontWeight: '500', transition: 'color 0.2s' }}>FAQ</Link>
+            <Link to="/terms" style={{ color: 'rgba(240,244,255,0.35)', textDecoration: 'none', fontSize: '13px', fontWeight: '500', transition: 'color 0.2s' }}>CGU</Link>
+            <Link to="/privacy" style={{ color: 'rgba(240,244,255,0.35)', textDecoration: 'none', fontSize: '13px', fontWeight: '500', transition: 'color 0.2s' }}>Confidentialité</Link>
             <Link to="/login" style={{ color: 'rgba(240,244,255,0.35)', textDecoration: 'none', fontSize: '13px', fontWeight: '500', transition: 'color 0.2s' }}>Connexion</Link>
             <Link to="/register" style={{ color: 'rgba(240,244,255,0.35)', textDecoration: 'none', fontSize: '13px', fontWeight: '500', transition: 'color 0.2s' }}>Inscription</Link>
           </div>

@@ -5,10 +5,13 @@ import { Eye, EyeOff, UserPlus, AlertCircle, CheckCircle, ChevronRight, ChevronL
 import { VaynaLogo } from '@/components/VaynaLogo'
 import { cn } from '@/lib/utils'
 
+import { TermsCheckbox } from '@/shared/components/TermsCheckbox'
+
 type Step = 1 | 2 | 3
 
 export function Register() {
   const [step, setStep] = useState<Step>(1)
+  const [termsAccepted, setTermsAccepted] = useState(false)
 
   // Step 1 — Identity
   const [firstName, setFirstName] = useState('')
@@ -53,6 +56,7 @@ export function Register() {
     if (step === 3) {
       if (password.length < 6) return 'Le mot de passe doit contenir au moins 6 caractères.'
       if (password !== confirmPassword) return 'Les mots de passe ne correspondent pas.'
+      if (!termsAccepted) return 'Vous devez accepter les conditions d\'utilisation.'
     }
     return null
   }
@@ -82,6 +86,8 @@ export function Register() {
         last_name: lastName,
         age: age ? Number(age) : undefined,
         gender: gender || undefined,
+        terms_accepted_at: new Date().toISOString(),
+        terms_version: '1.0'
       })
 
       if (error) {
@@ -374,7 +380,7 @@ export function Register() {
                     <ChevronRight size={16} />
                   </button>
                 ) : (
-                  <button type="submit" className="auth-btn-primary flex-1" disabled={loading}>
+                  <button type="submit" className={cn("auth-btn-primary flex-1", !termsAccepted && "opacity-50 cursor-not-allowed")} disabled={loading || !termsAccepted}>
                     {loading ? (
                       <span className="auth-btn-loading">
                         <span className="auth-spinner" />
@@ -393,14 +399,20 @@ export function Register() {
 
           <div className="flex items-center gap-4 my-6">
             <div className="flex-1 h-px" style={{ background: 'linear-gradient(to right, transparent, rgba(0,245,255,0.15), transparent)' }} />
-            <span className="text-[11px] font-semibold uppercase tracking-widest" style={{ color: 'rgba(240,244,255,0.3)' }}>ou continuer avec</span>
             <div className="flex-1 h-px" style={{ background: 'linear-gradient(to right, transparent, rgba(0,245,255,0.15), transparent)' }} />
+          </div>
+
+          <div className="mt-4 mb-6">
+            <TermsCheckbox checked={termsAccepted} onCheckedChange={setTermsAccepted} disabled={loading || googleLoading} />
           </div>
 
           <button
             type="button"
-            disabled={googleLoading}
-            className="w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-semibold transition-all duration-300 group"
+            disabled={googleLoading || !termsAccepted}
+            className={cn(
+              "w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm font-semibold transition-all duration-300 group",
+              !termsAccepted ? "opacity-50 cursor-not-allowed" : ""
+            )}
             style={{
               background: 'rgba(255,255,255,0.04)',
               border: '1px solid rgba(255,255,255,0.08)',
@@ -421,15 +433,21 @@ export function Register() {
               (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
             }}
             onClick={async () => {
+              if (!termsAccepted) {
+                setError("Vous devez accepter les conditions d'utilisation pour continuer avec Google.")
+                return
+              }
               try {
                 setGoogleLoading(true)
                 localStorage.setItem('isGoogleRegister', 'true')
+                localStorage.setItem('terms_accepted_at', new Date().toISOString())
                 const { error } = await signInWithGoogle()
                 if (error) throw error
               } catch (err: any) {
                 setError(err.message)
                 setGoogleLoading(false)
                 localStorage.removeItem('isGoogleRegister')
+                localStorage.removeItem('terms_accepted_at')
               }
             }}
           >
@@ -457,6 +475,13 @@ export function Register() {
               <div className="auth-footer mt-6">
                 <span className="auth-footer-text">Déjà un compte ?</span>
                 <Link to="/login" className="auth-link">Se connecter</Link>
+              </div>
+
+              <div className="mt-8 p-4 bg-orange-950/20 border border-orange-900/50 rounded-lg text-center">
+                <AlertCircle size={16} className="inline-block mb-1 text-orange-500 mr-2" />
+                <span className="text-xs text-orange-200/70 font-medium">
+                  <strong>Avertissement :</strong> VAYNA est un journal de trading et un outil d'analyse. Nous ne fournissons aucun conseil financier ou en investissement. Le trading comporte des risques élevés de perte en capital.
+                </span>
               </div>
             </>
           )}

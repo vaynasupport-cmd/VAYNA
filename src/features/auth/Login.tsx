@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@features/auth/useAuth'
 import { Eye, EyeOff, LogIn, AlertCircle, ChevronLeft, CheckCircle } from 'lucide-react'
 import { VaynaLogo } from '@/components/VaynaLogo'
+import { supabase } from '@/lib/supabaseClient'
 
 export function Login() {
   const location = useLocation()
@@ -27,6 +28,7 @@ export function Login() {
     if (!authLoading && !user && isGoogleCallback) {
       localStorage.removeItem('isGoogleLogin')
       localStorage.removeItem('isGoogleRegister')
+      localStorage.removeItem('terms_accepted_at')
       setIsGoogleCallback(false)
       
       const hash = window.location.hash
@@ -40,8 +42,22 @@ export function Login() {
     if (user && !authLoading) {
       if (isLoggingIn || loginSuccess || wasGoogleLogin) {
         if (wasGoogleLogin) {
+          const isGoogleReg = localStorage.getItem('isGoogleRegister') === 'true'
+          const termsAcceptedAt = localStorage.getItem('terms_accepted_at')
+
+          if (isGoogleReg && termsAcceptedAt) {
+            // Write terms acceptance to Supabase auth.users raw_user_meta_data
+            supabase.auth.updateUser({
+              data: {
+                terms_accepted_at: termsAcceptedAt,
+                terms_version: '1.0'
+              }
+            }).catch(console.error)
+          }
+
           localStorage.removeItem('isGoogleLogin')
           localStorage.removeItem('isGoogleRegister')
+          localStorage.removeItem('terms_accepted_at')
         }
         setIsGoogleCallback(false)
         setLoginSuccess(true)
@@ -237,6 +253,10 @@ export function Login() {
                 }}
                 onClick={async () => {
                   try {
+                    // Start of login logic
+                    localStorage.removeItem('isGoogleRegister')
+                    localStorage.removeItem('terms_accepted_at')
+                    
                     setGoogleLoading(true)
                     setIsLoggingIn(true)
                     localStorage.setItem('isGoogleLogin', 'true')

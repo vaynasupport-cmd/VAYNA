@@ -12,6 +12,8 @@ interface AuthContextType {
     last_name?: string
     age?: number
     gender?: string
+    terms_accepted_at?: string
+    terms_version?: string
   }) => Promise<{ error: Error | null }>
   signOut: () => Promise<void>
   resetPasswordForEmail: (email: string) => Promise<{ error: Error | null }>
@@ -84,7 +86,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (
     email: string,
     password: string,
-    metadata?: { first_name?: string; last_name?: string; age?: number; gender?: string }
+    metadata?: { first_name?: string; last_name?: string; age?: number; gender?: string; terms_accepted_at?: string; terms_version?: string }
   ) => {
     const isElectron = navigator.userAgent.toLowerCase().includes('electron')
     const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''
@@ -103,6 +105,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           last_name: metadata.last_name,
           age: metadata.age,
           gender: metadata.gender,
+          terms_accepted_at: metadata.terms_accepted_at,
+          terms_version: metadata.terms_version,
         } : undefined,
       },
     })
