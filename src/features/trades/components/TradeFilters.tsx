@@ -146,21 +146,21 @@ export function TradeFilters({
         {/* Date Filter Section (Collapsible) */}
         {showDateFilter && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{ opacity: 0, height: 0, y: -10 }}
+            animate={{ opacity: 1, height: 'auto', y: 0 }}
+            exit={{ opacity: 0, height: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="mt-4 pt-4 border-t border-border flex flex-wrap gap-4"
+            className="bg-card/40 backdrop-blur-xl border border-border/50 rounded-2xl p-4 flex flex-wrap gap-4 shadow-sm"
           >
             <div>
-              <label className="mb-2 block text-sm font-medium">Depuis</label>
+              <label className="mb-2 block text-sm font-medium text-muted-foreground">Depuis</label>
               <DatePicker
                 value={dateFrom}
                 onChange={setDateFrom}
               />
             </div>
             <div>
-              <label className="mb-2 block text-sm font-medium">Jusqu'au</label>
+              <label className="mb-2 block text-sm font-medium text-muted-foreground">Jusqu'au</label>
               <DatePicker
                 value={dateTo}
                 onChange={setDateTo}
@@ -168,8 +168,6 @@ export function TradeFilters({
             </div>
           </motion.div>
         )}
-      </CardContent>
-    </Card>
     </div>
   )
 }
