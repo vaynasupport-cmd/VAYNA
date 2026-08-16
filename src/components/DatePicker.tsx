@@ -90,16 +90,33 @@ export const DatePicker: React.FC<DatePickerProps> = ({ value, onChange }) => {
             <div className="flex items-center justify-between mb-3">
               <button
                 onClick={handlePrevMonth}
-                className="p-1 hover:bg-accent rounded"
+                className="p-1 hover:bg-accent rounded text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
-              <span className="text-xs font-semibold">
-                {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
-              </span>
+              <div className="flex items-center gap-1">
+                <select
+                  value={currentDate.getMonth()}
+                  onChange={(e) => setCurrentDate(new Date(currentDate.getFullYear(), parseInt(e.target.value), 1))}
+                  className="bg-transparent text-xs font-semibold cursor-pointer hover:text-primary outline-none focus:ring-0 text-center appearance-none p-1 rounded hover:bg-accent"
+                >
+                  {monthNames.map((m, i) => (
+                    <option key={m} value={i} className="bg-background text-foreground">{m}</option>
+                  ))}
+                </select>
+                <select
+                  value={currentDate.getFullYear()}
+                  onChange={(e) => setCurrentDate(new Date(parseInt(e.target.value), currentDate.getMonth(), 1))}
+                  className="bg-transparent text-xs font-semibold cursor-pointer hover:text-primary outline-none focus:ring-0 text-center appearance-none p-1 rounded hover:bg-accent"
+                >
+                  {Array.from({ length: 20 }, (_, i) => new Date().getFullYear() - 10 + i).map(year => (
+                    <option key={year} value={year} className="bg-background text-foreground">{year}</option>
+                  ))}
+                </select>
+              </div>
               <button
                 onClick={handleNextMonth}
-                className="p-1 hover:bg-accent rounded"
+                className="p-1 hover:bg-accent rounded text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ChevronRight className="h-4 w-4" />
               </button>
