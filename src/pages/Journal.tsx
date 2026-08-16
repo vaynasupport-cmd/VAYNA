@@ -26,6 +26,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
+import { DatePicker } from '@/components/DatePicker'
 import {
   Dialog,
   DialogContent,
@@ -348,8 +349,8 @@ export function Journal() {
             <div>
               <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-3 block">Filtre Temporel</span>
               <div className="space-y-2">
-                <Input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} className="h-8 text-xs bg-background/50" />
-                <Input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="h-8 text-xs bg-background/50" />
+                <DatePicker value={dateFrom} onChange={setDateFrom} />
+                <DatePicker value={dateTo} onChange={setDateTo} />
               </div>
             </div>
             <div className="flex items-center justify-between mt-4 pt-4 border-t border-border/50">
