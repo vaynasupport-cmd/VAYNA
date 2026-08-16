@@ -45,7 +45,43 @@ export function LegalModal({ type, isOpen, onClose }: LegalModalProps) {
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       }
       
-      await (window as any).html2pdf().set(opt).from(contentRef.current).save()
+      // Generate the PDF as a Blob first
+      const pdfWorker = (window as any).html2pdf().set(opt).from(contentRef.current);
+      const pdfBlob = await pdfWorker.output('blob');
+      
+      // Try to use the modern File System Access API to force a "Save As" dialog
+      if ('showSaveFilePicker' in window) {
+        try {
+          const handle = await (window as any).showSaveFilePicker({
+            suggestedName: filename,
+            types: [{
+              description: 'Fichier PDF',
+              accept: { 'application/pdf': ['.pdf'] },
+            }],
+          });
+          const writable = await handle.createWritable();
+          await writable.write(pdfBlob);
+          await writable.close();
+        } catch (err: any) {
+          // If user cancels the picker, don't do the fallback
+          if (err.name !== 'AbortError') {
+            throw err;
+          }
+        }
+      } else {
+        // Fallback for browsers (like Firefox or mobile) that don't support showSaveFilePicker
+        const url = URL.createObjectURL(pdfBlob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 100);
+      }
     } catch (error) {
       console.error('Failed to generate PDF:', error)
     } finally {
