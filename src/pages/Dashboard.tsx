@@ -583,22 +583,22 @@ export function Dashboard() {
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={monthlyPerformance} margin={{ top: 5, right: 5, left: -10, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} vertical={false} />
-                      <XAxis dataKey="date" tickFormatter={(v) => { const [y, m] = v.split('-'); const d = new Date(parseInt(y), parseInt(m) - 1); return d.toLocaleDateString('fr-FR', { month: 'short' }) }} stroke="hsl(var(--muted-foreground))" fontSize={9} tickLine={false} axisLine={false} />
+                      <XAxis dataKey="month" tickFormatter={(v) => { if (!v) return ''; const [y, m] = v.split('-'); const d = new Date(parseInt(y), parseInt(m) - 1); return d.toLocaleDateString('fr-FR', { month: 'short' }) }} stroke="hsl(var(--muted-foreground))" fontSize={9} tickLine={false} axisLine={false} />
                       <YAxis tickFormatter={(v) => `${v >= 0 ? '' : '-'}$${Math.abs(v) >= 1000 ? (Math.abs(v) / 1000).toFixed(1) + 'k' : Math.abs(v).toFixed(0)}`} stroke="hsl(var(--muted-foreground))" fontSize={9} tickLine={false} axisLine={false} />
                       <Tooltip
                         cursor={{ fill: 'hsl(var(--muted) / 0.2)' }}
                         contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))', borderRadius: 'var(--radius)', fontSize: '12px' }}
                         content={({ active, payload, label }) => {
-                          if (!active || !payload?.[0]) return null;
+                          if (!active || !payload?.[0] || !label) return null;
                           const d = payload[0].payload;
                           const [y, m] = (label as string).split('-');
                           const monthName = new Date(parseInt(y), parseInt(m) - 1).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-                          const wr = d.count > 0 ? ((d.wins / d.count) * 100).toFixed(0) : '0';
+                          const wr = d.trades > 0 ? ((d.wins / d.trades) * 100).toFixed(0) : '0';
                           return (
                             <div className="bg-card border border-border rounded-lg p-2.5 shadow-lg text-xs space-y-1">
                               <p className="font-semibold text-foreground capitalize">{monthName}</p>
                               <p className={d.pnl >= 0 ? 'text-trading-green font-bold' : 'text-trading-red font-bold'}>{d.pnl >= 0 ? '+' : ''}{formatCurrency(d.pnl)}</p>
-                              <p className="text-muted-foreground">{d.count} trades • WR {wr}%</p>
+                              <p className="text-muted-foreground">{d.trades} trades • WR {wr}%</p>
                             </div>
                           );
                         }}
