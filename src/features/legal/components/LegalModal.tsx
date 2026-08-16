@@ -23,13 +23,16 @@ export function LegalModal({ type, isOpen, onClose }: LegalModalProps) {
     setIsGenerating(true)
     
     try {
-      // Load html2pdf dynamically from CDN to avoid npm SSL issues
+      // Load html2pdf dynamically from local public folder to avoid CDN blocks
       if (!(window as any).html2pdf) {
         await new Promise((resolve, reject) => {
           const script = document.createElement('script')
-          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js'
+          script.src = '/html2pdf.bundle.min.js' // Loads from public folder
           script.onload = resolve
-          script.onerror = reject
+          script.onerror = () => {
+            console.error('Failed to load html2pdf script')
+            reject(new Error('Failed to load html2pdf script'))
+          }
           document.head.appendChild(script)
         })
       }
