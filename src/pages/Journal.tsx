@@ -344,7 +344,7 @@ export function Journal() {
         </Card>
 
         {/* Filtrage */}
-        <Card className="col-span-1 md:col-span-1 border-border/40 bg-card/40 backdrop-blur-md">
+        <Card className="col-span-1 md:col-span-1 border-border/40 bg-card/40 backdrop-blur-md relative z-20">
           <CardContent className="p-5 flex flex-col h-full justify-between">
             <div>
               <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-3 block">Filtre Temporel</span>

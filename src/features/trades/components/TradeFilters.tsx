@@ -150,7 +150,7 @@ export function TradeFilters({
             animate={{ opacity: 1, height: 'auto', y: 0 }}
             exit={{ opacity: 0, height: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="bg-card/40 backdrop-blur-xl border border-border/50 rounded-2xl p-4 flex flex-wrap gap-4 shadow-sm"
+            className="bg-card/40 backdrop-blur-xl border border-border/50 rounded-2xl p-4 flex flex-wrap gap-4 shadow-sm relative z-20"
           >
             <div>
               <label className="mb-2 block text-sm font-medium text-muted-foreground">Depuis</label>
